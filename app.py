@@ -1,7 +1,7 @@
 from flask import Flask, redirect
 import random
 import requests
-from channels import channels, weighted_random
+from lib.arena import Arena
 
 app = Flask(__name__)
 
@@ -18,29 +18,6 @@ def get_channel(channel):
     # Usable content list only includes items with contents['source']['url']
     length = len(contents)
     return contents, length
-
-class Arena:
-    def __init__(self):
-        self.channel = weighted_random(channels)
-    
-    def get_channel_contents(self):
-        """
-        Returns the channel's contents.
-        """
-        self.contents, self.length = get_channel(self.channel)
-    
-    def get_item_url(self):
-        """
-        Returns the item's URL.
-        """
-        self.item = random.choice(self.contents)
-        try:
-            link = self.item['source']['url']
-        except Exception as e:
-            self.item = random.choice(self.contents)
-            link = self.item['source']['url']
-            # link = None
-        return link
 
 @app.route('/')
 def index():
