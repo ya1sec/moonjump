@@ -6,7 +6,7 @@
 
 # Moonjump
 
-Moonjump redirects you to a random page out of thousands curated on [are.na](https://are.na) or [Hacker News](https://news.ycombinator.com).
+Moonjump redirects you to a random page harvested from [are.na](https://are.na) [Hacker News](https://news.ycombinator.com).
 
 ## Usage
 
@@ -14,7 +14,7 @@ Moonjump redirects you to a random page out of thousands curated on [are.na](htt
 
 A dictionary of the channels that are currently being used can be found at the top of `lib/arena.py`
 
-Note that since the are.na api is paginated, the dictionary of channels is weighted by the number of pages in the channel, so that the channels with the most pages are more likely to be selected.
+Note that since the are.na api is paginated, the dictionary of channels is weighted by the number of pages in the channel. Channels with the most pages are more likely to be selected.
 
 ### Hacker News
 

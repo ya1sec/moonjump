@@ -19,11 +19,11 @@ www-62v_kltr0d8
 # Channels dict with weights
 channels = {
 	f'internet-escape?page={random_page(11)}': 6,
-	f'thirsty-for-knowledge?page={random_page(11)}': 5,
 	f'bookmarks-1ntdk32bur0?page={random_page(6)}': 5,
 	f'we-should-talk-about-this-website?page={random_page(6)}': 4,
 	f'www-62v_kltr0d8?page={random_page(6)}': 4,
 	f'site-cite-sight?page={random_page(3)}': 3,
+    f'thirsty-for-knowledge?page={random_page(11)}': 3,
 	f'internet-surfing-clubs?page={random_page(2)}': 3,
 	f'links-to-the-cultural-revolution' : 1,
 }
