@@ -3,22 +3,9 @@ from flask_talisman import Talisman
 import random
 import requests
 from lib.arena import Arena
+from lib.hn import Hack
 
 app = Flask(__name__)
-
-
-# GET request to the channel
-def get_channel(channel):
-    """
-    Returns the channel's HTML.
-    """
-    url = f'https://api.are.na/v2/channels/{channel}?per=1000'
-    response = requests.get(url)
-    data = response.json()
-    contents = data['contents']
-    # Usable content list only includes items with contents['source']['url']
-    length = len(contents)
-    return contents, length
 
 @app.route('/')
 def index():
@@ -28,6 +15,12 @@ def index():
         link = a.get_item_url()
     except Exception as e:
         link = a.get_item_url()
+    return redirect(link)
+
+@app.route('/hn')
+def hn():
+    h = Hack()
+    link = h.serve()
     return redirect(link)
 
 Talisman(app, content_security_policy=None)
