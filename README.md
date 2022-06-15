@@ -1,9 +1,11 @@
+<h1 align="center">Moonjump</h1>
 <p align="center">
 	<img src="./assets/moonjump.png" alt="moonjump">
 </p>
-<h1 align="center">Moonjump</h1>
 
 Moonjump redirects you to a random page from a list of thousands of links from [are.na](https://are.na) or [Hacker News](https://news.ycombinator.com).
+<br>
+<br>
 
 ## Usage
 
