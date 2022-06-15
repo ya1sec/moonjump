@@ -12,8 +12,6 @@ Moonjump redirects you to a random interesting page out of thousands curated on 
 
 ### Are.na
 
-Are.na channels are weighted by the length of their contents. Channels with more content are more likely to be selected.
-
 A dictionary of the channels that are currently being used can be found at the top of `lib/arena.py`
 
 Note that since the are.na api is paginated, the dictionary of channels is weighted by the number of pages in the channel, so that the channels with the most pages are more likely to be selected.
