@@ -1,5 +1,4 @@
 import random
-import requests
 
 def random_page(max):
     """
