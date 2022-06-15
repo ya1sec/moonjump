@@ -10,7 +10,7 @@ Moonjump is a server that redirects you to a random page harvested from [are.na]
 
 ## Usage
 
-[Try it out](https://moonjump.com)
+Try it out: [moonjump.app](https://moonjump.com)
 
 There are a few ways to make shortcuts to moonjump
 
@@ -30,6 +30,9 @@ end)
 alias moonjump='open "https://moonjump.app"'
 ```
 
+- [moonjump.app](https://moonjump.app) serves from the are.na list
+- [moonjump.app/hn](https://moonjump.app/hn) serves from the Hacker News list
+
 ### Are.na
 
 A dictionary of the channels that are currently being used can be found at the top of `lib/arena.py`
@@ -38,7 +41,7 @@ Note that since the are.na api is paginated, the dictionary of channels is weigh
 
 ### Hacker News
 
-HN is in the works...
+Get served a random link from Top Stories, Best Stories, or New Stories. Additional parameters and configuration might be added in the future.
 
 ## Contributing
 
@@ -49,5 +52,5 @@ If you want to contribute, DM me or open a pull request. Things may be added or 
 - Bookmarklet
 - Extension
 - Hammerspoon Spoon
-- Easy config
+- Customization
 - lynx (text only sites)
