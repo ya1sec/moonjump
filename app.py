@@ -1,4 +1,5 @@
 from flask import Flask, redirect
+from flask_talisman import Talisman
 import random
 import requests
 from lib.arena import Arena
@@ -29,6 +30,7 @@ def index():
         link = a.get_item_url()
     return redirect(link)
 
+Talisman(app, content_security_policy=None)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
