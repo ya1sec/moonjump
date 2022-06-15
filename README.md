@@ -6,7 +6,7 @@
 
 # Moonjump
 
-Moonjump redirects you to a random page harvested from [are.na](https://are.na) [Hacker News](https://news.ycombinator.com).
+Moonjump redirects you to a random page harvested from [are.na](https://are.na) and [Hacker News](https://news.ycombinator.com).
 
 ## Usage
 
