@@ -6,9 +6,29 @@
 
 # Moonjump
 
-Moonjump redirects you to a random page harvested from [are.na](https://are.na) and [Hacker News](https://news.ycombinator.com).
+Moonjump is a server that redirects you to a random page harvested from [are.na](https://are.na) or [Hacker News](https://news.ycombinator.com).
 
 ## Usage
+
+[Try it out](https://moonjump.com)
+
+There are a few ways to make shortcuts to moonjump
+
+1. Add https://moonjump.app to your bookmarks bar and use it to jump to a random page.
+2. If you have OSX and Hammerspoon installed, you can map a shortcut to open moonjump in your default browser.
+   - I have mine mapped to `Cmd+Ctrl+J`
+
+```lua
+hs.hotkey.bind({"cmd", "ctrl"}, "j", function()
+	hs.execute("open 'https://moonjump.app'")
+end)
+```
+
+3. To launch from your shell, add the following to your `~/.zshrc` or `~/.bashrc` file:
+
+```bash
+alias moonjump='open "https://moonjump.app"'
+```
 
 ### Are.na
 
@@ -22,7 +42,7 @@ HN is in the works...
 
 ## Contributing
 
-If you want to contribute, please DM me or open a pull request. Things may be added or changed as needed.
+If you want to contribute, DM me or open a pull request. Things may be added or changed as needed.
 
 ## TODO
 
@@ -30,3 +50,4 @@ If you want to contribute, please DM me or open a pull request. Things may be ad
 - Extension
 - Hammerspoon Spoon
 - Easy config
+- lynx (text only sites)
