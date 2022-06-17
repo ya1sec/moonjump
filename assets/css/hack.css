@@ -17,7 +17,8 @@ body {
   font-family: Hack, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace, serif;
   word-wrap: break-word;
-  background-color: rgba(216, 210, 210, 0.55);
+  /* background-color: rgba(216, 210, 210, 0.55); */
+  background-color: rgba(93, 90, 90, 0.55);
   /* background-image: url("../../img/797E3A3.png");
   background-size: 20%;
   background-attachment: fixed; */
