@@ -1,6 +1,6 @@
 <!-- <h1 align="center">Moonjump</h1> -->
 
-<img width="90px" src="./assets/moonjump.png" alt="moonjump">
+<img width="90px" src="./assets/img/sun-purple.svg" alt="moonjump">
 <p align="center">
 </p>
 

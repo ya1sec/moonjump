@@ -1,0 +1,260 @@
+@font-face {
+  font-family: "Nimbus Sans L";
+  src: url("../../fonts/NimbusSanL-Bold.woff2") format("woff2"),
+    url("../../fonts/NimbusSanL-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: ".";
+  src: url("../../fonts/885868c6581f94c36b31e048170fb555.woff2") format("woff2"),
+    url("../../fonts/885868c6581f94c36b31e048170fb555.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nimbus Sans L";
+  src: url("../../fonts/NimbusSanL-Regu.woff2") format("woff2"),
+    url("../../fonts/NimbusSanL-Regu.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Serifbabe";
+  src: url("../../fonts/Serifbabe-Regular.woff2") format("woff2"),
+    url("../../fonts/Serifbabe-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Radio Grotesk";
+  src: url("../../fonts/RadioGrotesk-Bold.woff2") format("woff2"),
+    url("../../fonts/RadioGrotesk-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oroban Elegans";
+  src: url("../../fonts/Oroban-Elegans.woff2") format("woff2"),
+    url("../../fonts/Oroban-Elegans.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: ".";
+  src: url("../../fonts/Maruder-Thin.woff2") format("woff2"),
+    url("../../fonts/Maruder-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "CoFo Robert";
+  src: url("../../fonts/CoFoRobert-Light.woff2") format("woff2"),
+    url("../../fonts/CoFoRobert-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Oroban Elegans";
+  src: url("../../fonts/Oroban-ElegansItalic.woff2") format("woff2"),
+    url("../../fonts/Oroban-ElegansItalic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inferi";
+  src: url("../../fonts/Inferi-LightItalic.woff2") format("woff2"),
+    url("../../fonts/Inferi-LightItalic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inferi";
+  src: url("../../fonts/Inferi-Light.woff2") format("woff2"),
+    url("../../fonts/Inferi-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Radio Grotesk";
+  src: url("../../fonts/RadioGrotesk-Regular.woff2") format("woff2"),
+    url("../../fonts/RadioGrotesk-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Manusquared";
+  src: url("../../fonts/Manusquared-Regular.woff2") format("woff2"),
+    url("../../fonts/Manusquared-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Manusquared";
+  src: url("../../fonts/Manusquared-Bold.woff2") format("woff2"),
+    url("../../fonts/Manusquared-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../../fonts/JetBrainsMono-Regular.woff2") format("woff2"),
+    url("../../fonts/JetBrainsMono-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "NeueHaasGroteskDisp Pro Lt";
+  src: url("../../fonts/NHaasGroteskDSPro-45Lt.woff2") format("woff2"),
+    url("../../fonts/NHaasGroteskDSPro-45Lt.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "NeueHaasGroteskDisp Pro Md";
+  src: url("../fonts/NHaasGroteskDSPro-65Md.woff2") format("woff2"),
+    url("../fonts/NHaasGroteskDSPro-65Md.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "soyuz_groteskbold";
+  src: url("../fonts/soyuzgroteskbold-webfont.woff2") format("woff2"),
+    url("../fonts/soyuzgroteskbold-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "orobanmasuria";
+  src: url("../fonts/oroban-masuria-webfont.woff2") format("woff2"),
+    url("../fonts/oroban-masuria-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "orobanmasuria_italic";
+  src: url("../fonts/oroban-masuriaitalic-webfont.woff2") format("woff2"),
+    url("../fonts/oroban-masuriaitalic-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "orobanhermonthica";
+  src: url("../fonts/oroban-hermonthica-webfont.woff2") format("woff2"),
+    url("../fonts/oroban-hermonthica-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "orobanhermonthica_italic";
+  src: url("../fonts/oroban-hermonthicaitalic-webfont.woff2") format("woff2"),
+    url("../fonts/oroban-hermonthicaitalic-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "DOT19";
+  src: url("../fonts/DOT19-Regular.woff2") format("woff2"),
+    url("../fonts/DOT19-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("../fonts/hack-regular.woff2") format("woff2"),
+    url("../fonts/hack-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("../fonts/hack-bold.woff2") format("woff2"),
+    url("../fonts/hack-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("../fonts/hack-italic.woff2") format("woff2"),
+    url("../fonts/hack-italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("../fonts/hack-bolditalic.woff2") format("woff2"),
+    url("../fonts/hack-bolditalic.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("../../fonts/hack-regular-subset.woff2") format("woff2"),
+    url("../../fonts/hack-regular-subset.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("../../fonts/hack-bold-subset.woff2") format("woff2"),
+    url("../../fonts/hack-bold-subset.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("../../fonts/hack-italic-subset.woff2") format("woff2"),
+    url("../../fonts/hack-italic-webfont.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("../../fonts/hack-bolditalic-subset.woff2") format("woff2"),
+    url("../../fonts/hack-bolditalic-subset.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+}
