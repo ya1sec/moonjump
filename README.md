@@ -1,6 +1,6 @@
 <!-- <h1 align="center">Moonjump</h1> -->
 
-<img width="90px" src="./assets/img/sun-purple.svg" alt="moonjump">
+<img width="90px" src="https://raw.githubusercontent.com/ya1sec/moonjump/508770b57683b0012789dbd01fa31f8a19eeb8d9/static/assets/img/jupiter-purple.svg" alt="moonjump">
 <p align="center">
 </p>
 
