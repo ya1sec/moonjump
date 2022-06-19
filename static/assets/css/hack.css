@@ -24,6 +24,81 @@ body {
   background-attachment: fixed; */
 }
 
+.input_field {
+  margin: 0.8em 0;
+  padding: 0.4em;
+  border: 1px solid #ccc;
+  /* border-color: #0b0; */
+  border-radius: 0;
+  background: transparent;
+  outline: none;
+  -webkit-appearance: none;
+  /* for box shadows to show on iOS */
+}
+
+.search-container {
+  font-family: Hack, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  width: 490px;
+  /* display: block; */
+  margin: 0 auto;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em;
+  margin: 0.5em;
+  border-radius: 0.5em;
+  position: fixed;
+}
+
+ input#search-bar {
+   background: transparent;
+   margin: 0 auto;
+   width: 60%;
+   height: 45px;
+   padding: 0 20px;
+   font-size: 1rem;
+   border: 1px solid #d0cfce;
+   border-radius: 2em;
+   outline: none;
+ }
+
+::placeholder {
+  color: rgb(74, 73, 73);
+}
+
+ input#search-bar:focus {
+   border: 1px solid #008abf;
+   transition: 0.35s ease;
+ }
+
+ input#search-bar:focus::-webkit-input-placeholder {
+   transition: opacity 0.45s ease;
+   opacity: 1;
+ }
+
+ input#search-bar:focus::-moz-placeholder {
+   transition: opacity 0.45s ease;
+   opacity: 1;
+ }
+
+ input#search-bar:focus:-ms-placeholder {
+   transition: opacity 0.45s ease;
+   opacity: 1;
+ }
+
+ .search-icon {
+   margin: 0 auto;
+   width: 7%;
+   /* height: 35px; */
+   /* width: 5em;
+   height: 5em; */
+ }
+
+
 .main-container {
 }
 
@@ -65,20 +140,15 @@ body {
   margin-right: auto;
   width: 50%;
 }
-h1,
+/* h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
   line-height: 1.3em;
-}
-.img {
-  /* background-image: url("https://images.are.na/eyJidWNrZXQiOiJhcmVuYV9pbWFnZXMiLCJrZXkiOiIyNjUzMDgvb3JpZ2luYWxfNTM3NGViNjdkMDk0ODZhNjFkNDc4OGI3OWQ5N2E4MWUucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjoxODAwLCJoZWlnaHQiOjE4MDAsImZpdCI6Imluc2lkZSIsIndpdGhvdXRFbmxhcmdlbWVudCI6dHJ1ZX0sIndlYnAiOnsicXVhbGl0eSI6OTB9LCJyb3RhdGUiOm51bGwsImpwZWciOnsicXVhbGl0eSI6OTB9fX0=?bc=1"); */
-  /* background-image: url("../../img/797E3A3.png");
-  background-size: 20%;
-  background-attachment: fixed; */
-}
+} */
+
 fieldset {
   border: none;
   padding: 0;
@@ -109,21 +179,17 @@ h5,
 h6,
 strong {
   color: #000;
-  font-family: soyuz_groteskbold;
+  font-family: "NeueHaasGroteskDisp Pro Md";
+  /* font-family: soyuz_groteskbold; */
 }
 a {
-  background-color: blue;
+  /* background-color: blue; */
   color: #fff;
   text-decoration: none;
   /* cursor: pointer;
   color: blue;
   text-decoration: none;
   border-bottom: 1px solid blue; */
-}
-a {
-  background-color: blue;
-  color: #fff;
-  text-decoration: none;
 }
 /* a:visited {
   color: blue;
@@ -139,6 +205,10 @@ a {
 }
 .blue {
   color: #458588;
+}
+
+.black {
+  color: #000;
 }
 
 .school {

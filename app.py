@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request
+from flask import Flask, redirect, render_template, request, current_app
 from flask_talisman import Talisman
 import random
 import requests
@@ -6,10 +6,15 @@ from lib.arena import Arena
 from lib.hn import Hack
 from lib.search import Search
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
+# Serve index.html
 @app.route('/')
 def index():
+    return current_app.send_static_file('index.html')
+
+@app.route('/arena')
+def arena():
     a = Arena()
     a.get_channel_contents()
     try:

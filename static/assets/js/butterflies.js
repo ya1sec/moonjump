@@ -59,8 +59,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
   let butterflies = [
     {
       id: "red-black",
-      wingleft: "assets/media/butterfly/red-black/left.png",
-      wingright: "assets/media/butterfly/red-black/right.png",
+      wingleft: "/static/assets/media/butterfly/red-black/left.png",
+      wingright: "/static/assets/media/butterfly/red-black/right.png",
       size: 32,
       flyspeed: 40,
       flapspeed: 0.444,
@@ -68,8 +68,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     {
       id: "xray",
-      wingleft: "assets/media/butterfly/xray/left.png",
-      wingright: "assets/media/butterfly/xray/right.png",
+      wingleft: "/static/assets/media/butterfly/xray/left.png",
+      wingright: "/static/assets/media/butterfly/xray/right.png",
       size: 40,
       flyspeed: 40,
       flapspeed: 0.333,
