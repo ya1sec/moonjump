@@ -13,6 +13,16 @@ app = Flask(__name__, static_url_path='/static')
 def index():
     return current_app.send_static_file('index.html')
 
+@app.route('/jump')
+def jump():
+    types = ['arena', 'hack']
+    random_type = random.choice(types)
+    if random_type == 'arena':
+        return redirect('/arena')
+    elif random_type == 'hack':
+        return redirect('/hack')
+
+
 @app.route('/arena')
 def arena():
     a = Arena()
