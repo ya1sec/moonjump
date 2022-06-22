@@ -15,12 +15,15 @@ def index():
 
 @app.route('/jump')
 def jump():
-    types = ['arena', 'hack']
+    types = ['arena', 'gossipweb']
     random_type = random.choice(types)
-    if random_type == 'arena':
-        return redirect('/arena')
-    elif random_type == 'hack':
-        return redirect('/hack')
+    try:
+        if random_type == 'arena':
+            return redirect('/arena')
+        if random_type == 'gossipweb':
+            return redirect('https://gossipsweb.net/random')
+    except Exception as e:
+        return redirect('https://moonjump.app/jump')
 
 
 @app.route('/arena')
@@ -31,13 +34,19 @@ def arena():
         link = a.get_item_url()
     except Exception as e:
         link = a.get_item_url()
-    return redirect(link)
+    try:
+        return redirect(link)
+    except Exception as e:
+        return redirect('https://moonjump.app/arena')
 
 @app.route('/hn')
 def hn():
     h = Hack()
     link = h.serve()
-    return redirect(link)
+    try:
+        return redirect(link)
+    except Exception as e:
+        return redirect('https://moonjump.app/hn')
 
 @app.route('/search')
 def search():
@@ -46,7 +55,10 @@ def search():
     query = query.replace(' ', '+')
     s = Search()
     link = s.get_link(query)
-    return redirect(link)
+    try:
+        return redirect(link)
+    except Exception as e:
+        return redirect('https://moonjump.app')
 
 # Talisman(app, content_security_policy=None)
 

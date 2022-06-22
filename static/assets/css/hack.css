@@ -48,9 +48,9 @@ body {
   
   /* font-size: 1.5em; */
   /* font-weight: bold; */
-  color: #fff;
+  /* color: #fff; */
   text-decoration: none;
-  text-shadow: 0 0 0.1em #000;
+  /* text-shadow: 0 0 0.1em #000; */
   /* transition: all 0.2s ease-in-out; */
 }
 
@@ -215,8 +215,9 @@ strong {
 }
 a {
   /* background-color: blue; */
-  color: #fff;
-  text-decoration: none;
+  /* color: #fff; */
+  color: #2721d7;
+  /* text-decoration: none; */
   /* cursor: pointer;
   color: blue;
   text-decoration: none;
