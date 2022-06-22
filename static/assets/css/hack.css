@@ -70,7 +70,7 @@ body {
 .search-container {
   font-family: Hack, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  width: 490px;
+  width: auto;
   /* display: block; */
   margin: 0 auto;
 }
