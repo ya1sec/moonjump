@@ -1,0 +1,182 @@
+.inferi {
+  font-family: "Inferi";
+  font-size: 1em;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.jetbrains {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+}
+
+.inferi-small {
+  font-family: "Inferi";
+  font-size: 4px;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.inferi-large {
+  font-family: "Inferi";
+  font-size: 2.8vw;
+  line-height: 1.1em;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.dot {
+  font-family: DOT19;
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  font-size: 4em;
+}
+
+.inferi-small {
+  font-family: "Inferi";
+  font-size: 0.8em;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.inferi-italic {
+  font-family: "Inferi";
+  font-size: 0.8em;
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+.inferi-copyright {
+  font-family: "Inferi";
+  font-size: 0.6em;
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+.inferi-desc {
+  font-family: "Inferi";
+  font-size: 1em;
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  /* color: rgb(160, 75, 0); */
+}
+
+.masuria-title {
+  font-family: "orobanmasuria";
+  font-size: 2em;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+.masuria-pos {
+  font-family: "orobanmasuria";
+  font-size: 1em;
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+.hermonthica-title {
+  font-family: "orobanhermonthica";
+  font-size: 3em;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.hermonthica {
+  font-family: "orobanhermonthica";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.hermonthica-project-title {
+  font-family: "NeueHaasGroteskDisp Pro Md";
+  font-size: 5vw;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.hermonthica-pos {
+  font-family: "orobanhermonthica";
+  font-size: 0.5em;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.nhg-link {
+  font-family: "NeueHaasGroteskDisp Pro Md";
+  font-size: 0.8em;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+.nhg {
+  font-family: "NeueHaasGroteskDisp Pro Md";
+  font-size: 1em;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+.nhg-small-bold {
+  font-family: "NeueHaasGroteskDisp Pro Md";
+  font-size: 0.9vw;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+.nhg-large {
+  font-family: "NeueHaasGroteskDisp Pro Md";
+  font-size: 3vh;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+.heading {
+  padding-top: 20px;
+  line-height: 0px;
+}
+
+.job {
+  line-height: 0;
+  padding-bottom: 0px;
+}
+
+.exp-container {
+  max-width: 80%;
+  max-height: auto;
+  position: inherit;
+  margin-left: auto;
+  margin-right: auto;
+  margin: auto;
+  width: auto;
+  padding-left: 15px;
+}
+
+.exp-block {
+  padding-top: 0.1px;
+}
+
+.desc {
+  padding-top: 0px;
+}
+
+.soyuz {
+  font-family: soyuz_groteskbold;
+}
