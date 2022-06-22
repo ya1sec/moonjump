@@ -43,6 +43,32 @@ function searchMarginalia(event) {
   }
 }
 
+function key_down(e) {
+  if (e.key === "Enter") {
+    alert(e.key);
+    search_func();
+  }
+}
+
+function search_func() {
+  alert(url);
+  var query = document.getElementById("search-bar").value;
+  query = query.replace(/\s/g, "+");
+  const url = `https://moonjump.app/search?query=${query}`;
+  // window.location.href = url;
+}
+
+function search(ele) {
+  if (e.key == "Enter") {
+    let query = ele.value;
+    query = query.replace(/\s/g, "+");
+    const url = `https://moonjump.app/search?query=${query}`;
+    console.log(url);
+    alert(url);
+    window.location.href = url;
+  }
+}
+
 search_button.addEventListener("click", function () {
   let search_query = document.getElementById("search-bar").value;
   // replace spaces with +

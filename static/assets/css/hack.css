@@ -68,6 +68,7 @@ body {
 }
 
 .search-container {
+  display: flex;
   font-family: Hack, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace, serif;
   width: auto;
@@ -89,7 +90,7 @@ body {
    background: transparent;
    margin: 0 auto;
    width: 60%;
-   height: 45px;
+   height: 3em;
    padding: 0 20px;
    font-size: 1rem;
    border: 1px solid #d0cfce;
@@ -123,7 +124,6 @@ body {
 
  .search-icon {
    margin: 0 auto;
-   width: 7%;
    /* height: 35px; */
    /* width: 5em;
    height: 5em; */
