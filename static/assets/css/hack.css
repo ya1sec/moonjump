@@ -89,12 +89,12 @@ body {
  input#search-bar {
    background: transparent;
    margin: 0 auto;
-   width: 60%;
+   /* width: 60%; */
    height: 3em;
-   padding: 0 20px;
+   padding: 0 -30px;
    font-size: 1rem;
-   border: 1px solid #d0cfce;
-   border-radius: 2em;
+   /* border: 1px solid #d0cfce; */
+   /* border-radius: 2em; */
    outline: none;
  }
 
@@ -103,7 +103,7 @@ body {
 }
 
  input#search-bar:focus {
-   border: 1px solid #008abf;
+   /* border: 1px solid #008abf; */
    transition: 0.35s ease;
  }
 
@@ -129,6 +129,61 @@ body {
    height: 5em; */
  }
 
+.search-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+
+form {
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  padding: 2px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  margin: 0 0 30px;
+}
+
+input[type="search"] {
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 7px 8px;
+  font-size: 14px;
+  color: inherit;
+  border: 1px solid transparent;
+  border-radius: inherit;
+}
+
+
+button[type="submit"] {
+  text-indent: -999px;
+  overflow: hidden;
+  width: 40px;
+  padding: 0;
+  /* margin: 0; */
+  margin-left: 0;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+button[type="submit"]:hover {
+  opacity: 1;
+}
+
+button[type="submit"]:focus,
+input[type="search"]:focus {
+  /* box-shadow: 0 0 3px 0 #1183d6; */
+  /* border-color: #1183d6; */
+  outline: none;
+}
 
 .main-container {
 }
@@ -271,6 +326,16 @@ a:hover {
 }
 a:hover:visited {
   background-color: #d79921;
+}
+
+a.icon {
+  background-color: #00000000;
+  text-decoration: none;
+}
+
+a.icon:hover {
+  background-color: #00000000;
+  text-decoration: none;
 }
 
 .clock-div {
@@ -770,7 +835,7 @@ wing[data-side="right"] {
 .clock .s_pointer {
   stroke-width: 4px;
   /* stroke: red; */
-  stroke: #d79921;
+  stroke: #97d721;
 }
 .clock.-large {
   width: 50px;
@@ -789,7 +854,7 @@ wing[data-side="right"] {
 }
 .clock.-large .s_pointer {
   stroke-width: 1px;
-  stroke: #d79921;
+  stroke: #97d721;
 }
 .clock.-small {
   width: 1.1rem;
