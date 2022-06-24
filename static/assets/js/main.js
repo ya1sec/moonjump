@@ -38,7 +38,34 @@ function searchMarginalia(event) {
     // replace spaces with +
     search_query = search_query.replace(/\s/g, "+");
     const url = `https://moonjump.app/search?query=${search_query}`;
+    alert(url);
     console.log(url);
+    window.location.href = url;
+  }
+}
+
+function key_down(e) {
+  if (e.key === "Enter") {
+    alert(e.key);
+    search_func();
+  }
+}
+
+function search_func() {
+  alert(url);
+  var query = document.getElementById("search-bar").value;
+  query = query.replace(/\s/g, "+");
+  const url = `https://moonjump.app/search?query=${query}`;
+  // window.location.href = url;
+}
+
+function search(ele) {
+  if (e.key == "Enter") {
+    let query = ele.value;
+    query = query.replace(/\s/g, "+");
+    const url = `https://moonjump.app/search?query=${query}`;
+    console.log(url);
+    alert(url);
     window.location.href = url;
   }
 }
@@ -50,3 +77,31 @@ search_button.addEventListener("click", function () {
   let url = `https://moonjump.app/search?query=${search_query}`;
   window.location.href = url;
 });
+
+const form = document.getElementById("form");
+const search_field = document.getElementById("search-bar").value;
+
+// When search button is clicked, GET request is sent to server
+// function searchMarginalia(event) {
+//   if (event.key == "Enter") {
+//     let search_query = document.getElementById("search-bar").value;
+//     console.log(search_query);
+//     // replace spaces with +
+//     search_query = search_query.replace(/\s/g, "+");
+//     const url = `https://moonjump.app/search?query=${search_query}`;
+//     console.log(url);
+//     window.location.href = url;
+//   }
+
+function submitForm(event) {
+  event.preventDefault();
+  let search_query = document.getElementById("search-bar").value;
+  // replace spaces with +
+  search_query = search_query.replace(/\s/g, "+");
+  const url = `https://moonjump.app/search?query=${search_query}`;
+  console.log(url);
+  // alert(url);
+  window.location.href = url;
+}
+
+form.addEventListener("submit", submitForm);
