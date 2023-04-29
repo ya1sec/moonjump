@@ -20,6 +20,8 @@ If you are an OSX user and have hammerspoon installed, check the github repo for
 
 If anyone has any suggestions for improvements, please let me know! Also feel free to open a pull request. The codebase for the homepage is a little bit of a mess but the main functionality is in the Flask app.
 
+
+
 Links:
 
 https://moonjump.app
