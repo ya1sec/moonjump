@@ -20,6 +20,7 @@ www-62v_kltr0d8
 # Channels dict with weights
 channels = {
 	f'internet-escape?page={random_page(11)}': 6,
+    f'dev-tools-y8yzn_83uci?page={random_page(17)}': 5,
 	f'bookmarks-1ntdk32bur0?page={random_page(6)}': 5,
 	f'we-should-talk-about-this-website?page={random_page(6)}': 4,
 	f'www-62v_kltr0d8?page={random_page(6)}': 4,
@@ -34,7 +35,7 @@ def get_channel(channel):
     """
     Returns the channel's HTML.
     """
-    url = f'https://api.are.na/v2/channels/{channel}?per=1000'
+    url = f'https://api.are.na/v2/channels/{channel}&per=1000'
     response = requests.get(url)
     data = response.json()
     contents = data['contents'] # NOTE: Usable content list only includes items with contents['source']['url']
@@ -48,8 +49,12 @@ def get_channel(channel):
 
 # Are.na Class
 class Arena:
-    def __init__(self):
-        self.channel = weighted_random(channels)
+    def __init__(self, channel=None):
+        if channel == 'devtools':
+            self.channel = f'dev-tools-y8yzn_83uci?page={random_page(17)}'
+        else:
+            self.channel = weighted_random(channels)
+
     
     def get_channel_contents(self):
         """
