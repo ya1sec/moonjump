@@ -40,7 +40,7 @@ def arena():
         return redirect('https://moonjump.app/arena')
 
 @app.route('/devtools')
-def arena():
+def devtools():
     a = Arena(channel='devtools')
     a.get_channel_contents()
     try:
