@@ -52,6 +52,32 @@ def devtools():
     except Exception as e:
         return redirect('https://moonjump.app/devtools')
 
+@app.route('/django')
+def django():
+    a = Arena(channel='django')
+    a.get_channel_contents()
+    try:
+        link = a.get_item_url()
+    except Exception as e:
+        link = a.get_item_url()
+    try:
+        return redirect(link)
+    except Exception as e:
+        return redirect('https://moonjump.app/django')
+
+@app.route('/bookmarks')
+def bookmarks():
+    a = Arena(channel='bookmarks')
+    a.get_channel_contents()
+    try:
+        link = a.get_item_url()
+    except Exception as e:
+        link = a.get_item_url()
+    try:
+        return redirect(link)
+    except Exception as e:
+        return redirect('https://moonjump.app/bookmarks')
+
 @app.route('/hn')
 def hn():
     h = Hack()

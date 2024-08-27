@@ -27,6 +27,7 @@ channels = {
 	f'site-cite-sight?page={random_page(3)}': 3,
     f'thirsty-for-knowledge?page={random_page(11)}': 3,
 	f'internet-surfing-clubs?page={random_page(2)}': 3,
+    f'django-7kobd_9biyi?page={random_page(5)}': 1,
 	f'links-to-the-cultural-revolution' : 1,
 }
 
@@ -52,6 +53,10 @@ class Arena:
     def __init__(self, channel=None):
         if channel == 'devtools':
             self.channel = f'dev-tools-y8yzn_83uci?page={random_page(17)}'
+        elif channel == 'django':
+            self.channel = f'django-7kobd_9biyi?page={random_page(5)}'
+        elif channel == 'bookmarks':
+            self.channel = f'bookmarks-1ntdk32bur0?page={random_page(6)}'
         else:
             self.channel = weighted_random(channels)
 
