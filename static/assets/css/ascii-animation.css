@@ -1,0 +1,53 @@
+.ascii-art {
+  font-family: monospace;
+  white-space: pre;
+  line-height: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: black;
+  color: white;
+  padding: 20px;
+  font-size: 10px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+.star {
+  position: absolute;
+  animation: twinkle 2s infinite;
+}
+
+.star:nth-child(2n) {
+  animation-delay: 0.5s;
+}
+
+.star:nth-child(3n) {
+  animation-delay: 1s;
+}
+
+.star:nth-child(4n) {
+  animation-delay: 1.5s;
+}
+
+.moon {
+  position: absolute;
+  top: 10%;
+  left: 70%;
+  font-size: 20px;
+  transform: rotate(90deg);
+  animation: moonPhase 8s infinite;
+}
+
+@keyframes moonPhase {
+  0% { opacity: 0.2; }
+  25% { opacity: 0.5; }
+  50% { opacity: 1; }
+  75% { opacity: 0.5; }
+  100% { opacity: 0.2; }
+}

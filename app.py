@@ -15,18 +15,32 @@ def index():
 
 @app.route('/jump')
 def jump():
-    types = ['arena', 'gossipweb']
-    random_type = random.choice(types)
-    try:
-        if random_type == 'arena':
-            a = Arena()
-            a.get_channel_contents()
-            link = a.get_item_url()
-        elif random_type == 'gossipweb':
-            link = 'https://gossipsweb.net/random'
-        return link
-    except Exception as e:
-        return 'https://moonjump.app/jump'
+    types = ['arena', 'marginalia']
+    max_attempts = 5  # Maximum number of attempts to find a working link
+
+    for _ in range(max_attempts):
+        random_type = random.choice(types)
+        try:
+            if random_type == 'arena':
+                a = Arena()
+                a.get_channel_contents()
+                link = a.get_item_url()
+            else:
+                link = Search().random()
+                print(f"Random link: {link}")
+                return link
+
+            # Check if the link is accessible
+            response = requests.head(link, allow_redirects=True, timeout=5)
+            if response.status_code == 200:
+                return link
+            else:
+                print(f"Link {link} is not accessible.")
+        except Exception as e:
+            return redirect('/jump')
+    
+    # If no working link is found after max_attempts, return a fallback URL
+    return 'https://moonjump.app/jump'
 
 @app.route('/arena')
 def arena():

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 
 <head>
   <meta charset="utf-8" />
@@ -85,10 +84,9 @@
           sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
       </div>
     </div>
-
     <!-- Replace the existing jump button div with this updated version -->
     <div id="jump-button" class="center jump-button-container">
-      <img class="jump-circle" src="/static/assets/img/sun.svg" width="80px" alt="" />
+      <img class="jump-circle" src="/static/assets/img/sun-purple.svg" width="80px" alt="" />
       <form id="form" class="search-form">
         <input type="search" placeholder="Search..." id="search-bar">
         <button id="search-button" type="submit">Search</button>
@@ -107,12 +105,14 @@
       </p>
       <p>The easiest way to jump is to click the large logo at the center of this page. You can also add <a
           target="_blank" href="https://moonjump.app/jump" class="">moonjump.app/jump</a> to your bookmarks bar.</p>
-      <p>Moonjump aims to spark curiosity and provide a portal to the vast collection of interesting material hidden by
+      <p>Moonjump aims to spark curiosity and provide a portal to the vast collection of interesting material hidden
+        by
         the commercial web.</p>
       <p>The source material is aggregated with care by users of Are.na, Hacker News, and Gossip Web. Since this
         accumulation is performed by hand, pages are saved because they had an effect on the users who saved them. The
         goal is to find something that has an effect on you.</p>
-      <p>This collection of curious content saved to Are.na channels or posted on Hacker News is a trove of handcrafted
+      <p>This collection of curious content saved to Are.na channels or posted on Hacker News is a trove of
+        handcrafted
         treasures. But as our habits have taught us in the
         contemporary
         era of web surfing, we are prone to doomscrolling (and even doom-bookmarking).</p>
@@ -127,7 +127,8 @@
         queries
         on Moonjump use the Marginalia API to redirect you to a random result.
       </p>
-      <p>To jump to a random site from Are.na or Hacker News, click the links above the search bar. Otherwise, click on
+      <p>To jump to a random site from Are.na or Hacker News, click the links above the search bar. Otherwise, click
+        on
         the large logo to jump blindly.</p>
 
       <p>Learn more tricks and contribute on GitHub:</p>
@@ -174,7 +175,26 @@
       document.getElementById('jump-result').addEventListener('wheel', function (e) {
         e.stopPropagation();
       });
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const jumpCircle = document.querySelector('.jump-circle');
+
+        jumpCircle.addEventListener('click', function () {
+          this.classList.add('rotating');
+          setTimeout(() => {
+            this.classList.remove('rotating');
+          }, 1000); // Remove the class after 1 second (duration of rotation)
+        });
+      });
+      document.querySelector('.jump-circle').addEventListener('click', function () {
+        this.classList.add('clicked');
+        setTimeout(() => {
+          this.classList.remove('clicked');
+        }, 1000);
+      });
+
     </script>
+
 </body>
 
 </html>

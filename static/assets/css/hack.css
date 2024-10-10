@@ -22,6 +22,7 @@ body {
   /* background-image: url("../../img/797E3A3.png");
   background-size: 20%;
   background-attachment: fixed; */
+  padding-bottom: 120px; /* Adjust this value based on the height of your jump-button container */
 }
 
 /* Centered nav */
@@ -920,16 +921,46 @@ wing[data-side="right"] {
   align-items: center;
   width: 100%;
   max-width: 300px;
+  z-index: 1001; /* Ensure it's above the iframe */
 }
 
 .jump-circle {
   margin-bottom: 10px;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  z-index: 1002; /* Ensure it's above everything else */
+  animation: pulse 2s infinite ease-in-out;
 }
 
 .jump-circle:hover {
   transform: scale(1.1);
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.2));
+}
+
+.jump-circle.rotating {
+  animation: pulse 2s infinite ease-in-out, rotate 1s linear;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .search-form {
@@ -954,7 +985,7 @@ wing[data-side="right"] {
   transform: translate(-50%, -50%);
   width: 90%;
   max-width: 1200px;
-  height: 80vh;
+  height: calc(80vh - 100px); /* Subtract space for the jump-button */
   z-index: 1000;
   background-color: white;
   border-radius: 10px;
@@ -997,4 +1028,25 @@ wing[data-side="right"] {
 
 .close-button:hover {
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Add media queries to adjust padding for different screen sizes */
+@media only screen and (max-width: 768px) {
+  body {
+    padding-bottom: 150px; /* Increase padding for smaller screens */
+  }
+
+  #jump-result {
+    height: calc(80vh - 150px); /* Adjust iframe height for smaller screens */
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  body {
+    padding-bottom: 180px; /* Further increase padding for very small screens */
+  }
+
+  #jump-result {
+    height: calc(80vh - 180px); /* Adjust iframe height for very small screens */
+  }
 }
