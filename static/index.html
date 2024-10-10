@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 
 <head>
   <meta charset="utf-8" />
@@ -49,100 +48,166 @@
 
   <div class="name">
     <!-- <br /> -->
-    <small class="moonjump">Moonjump</small>
-  </div>
-  <div class="blur-center">
-    <img width="300" class="image" src="/static/assets/img/jupiter.png" />
+    <!-- <small class="moonjump">info</small> -->
   </div>
   <div class="main container">
     <div class="center">
       <a target="_blank" href="https://moonjump.app/jump">
         <img class="center" src="/static/assets/img/sun.svg" width="80%" alt="" />
       </a>
-      <!-- <input class="center input_field" type="text" id="search" name="search" size="50"> -->
-      <!-- <br> -->
     </div>
-
-    <div class="center search-container">
-      <small class="nav-small">
-        <a class="nav-item" target="_blank" href="https://moonjump.app/arena">Are.na</a>
-        •
-        <a class="nav-item" target="_blank" href="https://moonjump.app/jump" rel="noopener noreferrer"
-          href="https://moonjump.app/hn">Hacker
-          News</a>
-      </small>
+    <!-- Add the iframe for displaying the jump result -->
+    <div id="jump-result" class="center" style="display: none;">
+      <button class="close-button" onclick="closeJumpResult()">&times;</button>
+      <div class="iframe-container">
+        <iframe id="jump-iframe" frameborder="0"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+      </div>
     </div>
-
-    <!-- <form class="center search-container">
-      <input type="text" class="center nav-item" id="search-bar" placeholder="Search" onkeydown="key_down()">
-      <small class="nav-small">
-        <a class="center search-icon" href="#" id="search-button">search</a>
-      </small>
-      <a href="#" class="center"><img class="center search-icon"
-          src="https://raw.githubusercontent.com/ya1sec/moonjump/main/static/assets/moonjump.png"
-          id="search-button"></a>
-    </form> -->
-
-    <div class="search-div">
-      <form id="form" class="center">
+    <!-- <div id="jump-button" class="center jump-button-container">
+      <img class="jump-circle" src="/static/assets/img/sun-purple.svg" width="80px" alt="" />
+      <form id="form" class="search-form">
         <input type="search" placeholder="Search..." id="search-bar">
         <button id="search-button" type="submit">Search</button>
       </form>
+    </div> -->
+    <!-- Replace the existing jump button div with this updated version -->
+    <div id="jump-button" class="center jump-button-container">
+      <img class="jump-circle" src="" alt="Random Card" />
+      <!-- <form id="form" class="search-form">
+        <input type="search" placeholder="Search..." id="search-bar" />
+        <button id="search-button" type="submit">Search</button>
+      </form> -->
     </div>
 
 
-    <p class="email">
-      <a target="_blank" href="https://moonjump.app/jump" class="bg-term">{ <span class="">Moonjump</span> }</a>
-    </p>
+    <div class="info" style="display: none;">
+      <p class="email">
+        <a target="_blank" href="https://moonjump.app/jump" class="bg-term">{ <span class="">Moonjump</span> }</a>
+      </p>
+      <p>⚐ ⚑</p>
+      <p>To whom it may concern,</p>
+      <p>
+        Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.
+      </p>
+      <p>The easiest way to jump is to click the large logo at the center of this page. You can also add <a
+          target="_blank" href="https://moonjump.app/jump" class="">moonjump.app/jump</a> to your bookmarks bar.</p>
+      <p>Moonjump aims to spark curiosity and provide a portal to the vast collection of interesting material hidden
+        by
+        the commercial web.</p>
+      <p>The source material is aggregated with care by users of Are.na, Hacker News, and Gossip Web. Since this
+        accumulation is performed by hand, pages are saved because they had an effect on the users who saved them. The
+        goal is to find something that has an effect on you.</p>
+      <p>This collection of curious content saved to Are.na channels or posted on Hacker News is a trove of
+        handcrafted
+        treasures. But as our habits have taught us in the
+        contemporary
+        era of web surfing, we are prone to doomscrolling (and even doom-bookmarking).</p>
+      <p>Moonjump makes a decision for you
+        by selecting something random from a deep sea of unconventional content. Results may be peculiar, profound, or
+        absolute nonsense. But you can always close the tab and jump again.</p>
+      <p>
+        The search engine is powered by <a target="_blank" href="https://search.marginalia.nu" class="">Marginalia</a>,
+        a
+        project
+        which indexes non-commercial content and may surprise you with sites you perhaps weren't aware of. Search
+        queries
+        on Moonjump use the Marginalia API to redirect you to a random result.
+      </p>
+      <p>To jump to a random site from Are.na or Hacker News, click the links above the search bar. Otherwise, click
+        on
+        the large logo to jump blindly.</p>
 
-    <p>⚐ ⚑</p>
-    <p>To whom it may concern,</p>
-    <p>
-      Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.
-    </p>
-    <p>The easiest way to jump is to click the large logo at the center of this page. You can also add <a
-        target="_blank" href="https://moonjump.app/jump" class="">moonjump.app/jump</a> to your bookmarks bar.</p>
-    <p>Moonjump aims to spark curiosity and provide a portal to the vast collection of interesting material hidden by
-      the commercial web.</p>
-    <p>The source material is aggregated with care by users of Are.na, Hacker News, and Gossip Web. Since this
-      accumulation is performed by hand, pages are saved because they had an effect on the users who saved them. The
-      goal is to find something that has an effect on you.</p>
-    <p>This collection of curious content saved to Are.na channels or posted on Hacker News is a trove of handcrafted
-      treasures. But as our habits have taught us in the
-      contemporary
-      era of web surfing, we are prone to doomscrolling (and even doom-bookmarking).</p>
-    <p>Moonjump makes a decision for you
-      by selecting something random from a deep sea of unconventional content. Results may be peculiar, profound, or
-      absolute nonsense. But you can always close the tab and jump again.</p>
-    <p>
-      The search engine is powered by <a target="_blank" href="https://search.marginalia.nu" class="">Marginalia</a>, a
-      project
-      which indexes non-commercial content and may surprise you with sites you perhaps weren't aware of. Search queries
-      on Moonjump use the Marginalia API to redirect you to a random result.
-    </p>
-    <p>To jump to a random site from Are.na or Hacker News, click the links above the search bar. Otherwise, click on
-      the large logo to jump blindly.</p>
-
-    <p>Learn more tricks and contribute on GitHub:</p>
-    <a href="https://github.com/ya1sec/moonjump" target="_blank" class="icon">
-      <small>
-        <span class="ankit">
-          <img class="icon" width="20" src="/static/assets/img/gh.svg" alt="">
-        </span>
-      </small>
-    </a>
-    <br>
-    <br>
-    <small>
-      <a href="https://ya1sec.com" target="_blank">
-        <p class="">ya1sec 2022</p>
+      <p>Learn more tricks and contribute on GitHub:</p>
+      <a href="https://github.com/ya1sec/moonjump" target="_blank" class="icon">
+        <small>
+          <span class="ankit">
+            <img class="icon" width="20" src="/static/assets/img/gh.svg" alt="">
+          </span>
+        </small>
       </a>
-    </small>
+      <br>
+      <br>
+      <small>
+        <a href="https://ya1sec.com" target="_blank">
+          <p class="">ya1sec 2022</p>
+        </a>
+      </small>
+    </div>
+
 
     <script src="/static/assets/js/lib/jquery-3.3.1.min.js"></script>
     <script src="/static/assets/js/lib/moment.js"></script>
     <script src="/static/assets/js/lib/moment-timezone-with-data.js"></script>
     <script src="/static/assets/js/main.js"></script>
+
+    <!-- Add new script for jump functionality -->
+    <script>
+      function closeJumpResult() {
+        document.getElementById('jump-result').style.display = 'none';
+        document.getElementById('jump-iframe').src = 'about:blank';
+      }
+
+      document.querySelector('.jump-circle').addEventListener('click', function () {
+        fetch('/jump')
+          .then(response => response.text())
+          .then(url => {
+            document.getElementById('jump-iframe').src = url;
+            document.getElementById('jump-result').style.display = 'block';
+          })
+          .catch(error => console.error('Error:', error));
+      });
+
+      // Prevent scrolling on the main page when the iframe is open
+      document.getElementById('jump-result').addEventListener('wheel', function (e) {
+        e.stopPropagation();
+      });
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const jumpCircle = document.querySelector('.jump-circle');
+        updateCardImage();
+
+        jumpCircle.addEventListener('click', function () {
+          this.classList.add('rotating');
+          setTimeout(() => {
+            this.classList.remove('rotating');
+          }, 1000); // Remove the class after 1 second (duration of rotation)
+        });
+      });
+      document.querySelector('.jump-circle').addEventListener('click', function () {
+        this.classList.add('clicked');
+        updateCardImage();
+        setTimeout(() => {
+          this.classList.remove('clicked');
+        }, 1000);
+      });
+      // Function to get a random card image URL
+      function getRandomCardImageUrl() {
+        const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        const suits = ['C', 'D', 'H', 'S']; // Clubs, Diamonds, Hearts, Spades
+
+        const value = values[Math.floor(Math.random() * values.length)];
+        const suit = suits[Math.floor(Math.random() * suits.length)];
+
+        // Handle the special case where '10' is represented as '0' in the URL
+        const valueCode = value === '10' ? '0' : value;
+
+        const cardCode = `${valueCode}${suit}`;
+        const imageUrl = `https://deckofcardsapi.com/static/img/${cardCode}.svg`;
+
+        return imageUrl;
+      }
+
+      // Function to update the card image
+      function updateCardImage() {
+        const cardImage = document.querySelector('.jump-circle');
+        const newImageUrl = getRandomCardImageUrl();
+        cardImage.src = newImageUrl;
+      }
+
+
+    </script>
+
 </body>
 
 </html>
