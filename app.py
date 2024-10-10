@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, current_app
+from flask import Flask, redirect, render_template, request, current_app, jsonify
 from flask_talisman import Talisman
 import random
 import requests
@@ -19,12 +19,14 @@ def jump():
     random_type = random.choice(types)
     try:
         if random_type == 'arena':
-            return redirect('/arena')
-        if random_type == 'gossipweb':
-            return redirect('https://gossipsweb.net/random')
+            a = Arena()
+            a.get_channel_contents()
+            link = a.get_item_url()
+        elif random_type == 'gossipweb':
+            link = 'https://gossipsweb.net/random'
+        return link
     except Exception as e:
-        return redirect('https://moonjump.app/jump')
-
+        return 'https://moonjump.app/jump'
 
 @app.route('/arena')
 def arena():
