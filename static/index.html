@@ -48,34 +48,14 @@
 
   <div class="name">
     <!-- <br /> -->
-    <small class="moonjump">Moonjump</small>
+    <!-- <small class="moonjump">info</small> -->
   </div>
   <div class="main container">
     <div class="center">
       <a target="_blank" href="https://moonjump.app/jump">
         <img class="center" src="/static/assets/img/sun.svg" width="80%" alt="" />
       </a>
-      <!-- <input class="center input_field" type="text" id="search" name="search" size="50"> -->
-      <!-- <br> -->
     </div>
-
-    <!-- <div class="center search-container">
-      <small class="nav-small">
-        <a class="nav-item" target="_blank" href="https://moonjump.app/arena">Are.na</a>
-        •
-        <a class="nav-item" target="_blank" href="https://moonjump.app/jump" rel="noopener noreferrer"
-          href="https://moonjump.app/hn">Hacker
-          News</a>
-      </small>
-    </div> -->
-
-    <!-- <div class="search-div">
-      <form id="form" class="center">
-        <input type="search" placeholder="Search..." id="search-bar">
-        <button id="search-button" type="submit">Search</button>
-      </form>
-    </div> -->
-
     <!-- Add the iframe for displaying the jump result -->
     <div id="jump-result" class="center" style="display: none;">
       <button class="close-button" onclick="closeJumpResult()">&times;</button>
@@ -84,20 +64,27 @@
           sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
       </div>
     </div>
-    <!-- Replace the existing jump button div with this updated version -->
-    <div id="jump-button" class="center jump-button-container">
+    <!-- <div id="jump-button" class="center jump-button-container">
       <img class="jump-circle" src="/static/assets/img/sun-purple.svg" width="80px" alt="" />
       <form id="form" class="search-form">
         <input type="search" placeholder="Search..." id="search-bar">
         <button id="search-button" type="submit">Search</button>
       </form>
+    </div> -->
+    <!-- Replace the existing jump button div with this updated version -->
+    <div id="jump-button" class="center jump-button-container">
+      <img class="jump-circle" src="" alt="Random Card" />
+      <!-- <form id="form" class="search-form">
+        <input type="search" placeholder="Search..." id="search-bar" />
+        <button id="search-button" type="submit">Search</button>
+      </form> -->
     </div>
 
-    <p class="email">
-      <a target="_blank" href="https://moonjump.app/jump" class="bg-term">{ <span class="">Moonjump</span> }</a>
-    </p>
 
-    <div class="info">
+    <div class="info" style="display: none;">
+      <p class="email">
+        <a target="_blank" href="https://moonjump.app/jump" class="bg-term">{ <span class="">Moonjump</span> }</a>
+      </p>
       <p>⚐ ⚑</p>
       <p>To whom it may concern,</p>
       <p>
@@ -178,6 +165,7 @@
 
       document.addEventListener('DOMContentLoaded', function () {
         const jumpCircle = document.querySelector('.jump-circle');
+        updateCardImage();
 
         jumpCircle.addEventListener('click', function () {
           this.classList.add('rotating');
@@ -188,10 +176,35 @@
       });
       document.querySelector('.jump-circle').addEventListener('click', function () {
         this.classList.add('clicked');
+        updateCardImage();
         setTimeout(() => {
           this.classList.remove('clicked');
         }, 1000);
       });
+      // Function to get a random card image URL
+      function getRandomCardImageUrl() {
+        const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        const suits = ['C', 'D', 'H', 'S']; // Clubs, Diamonds, Hearts, Spades
+
+        const value = values[Math.floor(Math.random() * values.length)];
+        const suit = suits[Math.floor(Math.random() * suits.length)];
+
+        // Handle the special case where '10' is represented as '0' in the URL
+        const valueCode = value === '10' ? '0' : value;
+
+        const cardCode = `${valueCode}${suit}`;
+        const imageUrl = `https://deckofcardsapi.com/static/img/${cardCode}.svg`;
+
+        return imageUrl;
+      }
+
+      // Function to update the card image
+      function updateCardImage() {
+        const cardImage = document.querySelector('.jump-circle');
+        const newImageUrl = getRandomCardImageUrl();
+        cardImage.src = newImageUrl;
+      }
+
 
     </script>
 

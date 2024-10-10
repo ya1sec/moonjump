@@ -8,6 +8,7 @@ html {
 iframe {
   border: none;
   pointer-events: none;
+  margin-bottom: 30px;
 }
 
 body {
@@ -18,11 +19,22 @@ body {
     Bitstream Vera Sans Mono, Courier New, monospace, serif;
   word-wrap: break-word;
   /* background-color: rgba(216, 210, 210, 0.55); */
-  background-color: rgba(93, 90, 90, 0.55);
+  /* background-color: rgba(93, 90, 90, 0.55); */
   /* background-image: url("../../img/797E3A3.png");
   background-size: 20%;
   background-attachment: fixed; */
   padding-bottom: 120px; /* Adjust this value based on the height of your jump-button container */
+}
+
+
+@keyframes rotateCard {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(360deg);
+  }
 }
 
 /* Centered nav */
@@ -68,15 +80,6 @@ body {
   /* for box shadows to show on iOS */
 }
 
-.search-container {
-  display: flex;
-  font-family: Hack, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  width: auto;
-  /* display: block; */
-  margin: 0 auto;
-}
-
 .nav {
   display: flex;
   justify-content: center;
@@ -87,42 +90,58 @@ body {
   position: fixed;
 }
 
- input#search-bar {
-   background: transparent;
-   margin: 0 auto;
-   /* width: 60%; */
-   height: 3em;
-   padding: 0 -30px;
-   font-size: 1rem;
-   /* border: 1px solid #d0cfce; */
-   /* border-radius: 2em; */
-   outline: none;
- }
 
 ::placeholder {
   color: rgb(74, 73, 73);
 }
 
- input#search-bar:focus {
-   /* border: 1px solid #008abf; */
-   transition: 0.35s ease;
- }
+.search-container {
+  display: flex;
+  font-family: Hack, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  width: auto;
+  /* display: block; */
+  margin: 0 auto;
+}
+.search-form {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
 
- input#search-bar:focus::-webkit-input-placeholder {
-   transition: opacity 0.45s ease;
-   opacity: 1;
- }
+#search-button {
+  white-space: nowrap;
+}
+#search-bar {
+  flex-grow: 1;
+  margin-right: 5px;
+}
 
- input#search-bar:focus::-moz-placeholder {
-   transition: opacity 0.45s ease;
-   opacity: 1;
- }
+input#search-bar {
+  background: transparent;
+  margin: 0 auto;
+  height: 3em;
+  padding: 0 15px;
+  font-size: 1rem;
+  outline: none;
+  border-radius: 10px;
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
 
- input#search-bar:focus:-ms-placeholder {
-   transition: opacity 0.45s ease;
-   opacity: 1;
- }
+input#search-bar:focus {
+  transform: scale(1.02);
+  box-shadow: inset 0 0 20px rgba(78, 75, 75, 0.3), 0 6px 8px rgba(26, 24, 24, 0.2);
+}
 
+input#search-bar:focus::-webkit-input-placeholder,
+input#search-bar:focus::-moz-placeholder,
+input#search-bar:focus:-ms-placeholder {
+  transition: opacity 0.45s ease;
+  opacity: 0.5;
+}
  .search-icon {
    margin: 0 auto;
    /* height: 35px; */
@@ -144,7 +163,7 @@ form {
   justify-content: center;
   align-items: stretch;
   padding: 2px;
-  border: 1px solid currentColor;
+  /* border: 1px solid currentColor; */
   border-radius: 5px;
   margin: 0 0 30px;
 }
@@ -925,21 +944,46 @@ wing[data-side="right"] {
 }
 
 .jump-circle {
-  margin-bottom: 10px;
+  /* width: 180px;
+  height: 250px; */
+  width: 30%;
+  margin-bottom: 30px;
   cursor: pointer;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-  z-index: 1002; /* Ensure it's above everything else */
+  z-index: 1002;
   animation: pulse 2s infinite ease-in-out;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.jump-circle img {
+  width: 140%;
+  /* Increase width to 140% of the container */
+  height: 140%;
+  /* Increase height to 140% of the container */
+  object-fit: cover;
+  object-position: center;
+  transform: scale(2);
+  /* Reset scale to 1 */
 }
 
 .jump-circle:hover {
   transform: scale(1.1);
-  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 6px 8px rgba(255, 255, 255, 0.449));
+  box-shadow: inset 0 0 20px rgba(78, 75, 75, 0.3);
 }
 
 .jump-circle.rotating {
   animation: pulse 2s infinite ease-in-out, rotate 1s linear;
+}
+
+.jump-circle.clicked {
+  animation: rotateCard 1s ease-in-out;
 }
 
 @keyframes pulse {
@@ -963,29 +1007,14 @@ wing[data-side="right"] {
   }
 }
 
-.search-form {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-}
-
-#search-bar {
-  flex-grow: 1;
-  margin-right: 5px;
-}
-
-#search-button {
-  white-space: nowrap;
-}
-
 #jump-result {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  max-width: 1200px;
-  height: calc(80vh - 100px); /* Subtract space for the jump-button */
+  /* max-width: 1200px; */
+  height: calc(90vh - 100px); /* Subtract space for the jump-button */
   z-index: 1000;
   background-color: white;
   border-radius: 10px;
@@ -1036,9 +1065,7 @@ wing[data-side="right"] {
     padding-bottom: 150px; /* Increase padding for smaller screens */
   }
 
-  #jump-result {
-    height: calc(80vh - 150px); /* Adjust iframe height for smaller screens */
-  }
+
 }
 
 @media only screen and (max-width: 480px) {
@@ -1046,7 +1073,4 @@ wing[data-side="right"] {
     padding-bottom: 180px; /* Further increase padding for very small screens */
   }
 
-  #jump-result {
-    height: calc(80vh - 180px); /* Adjust iframe height for very small screens */
-  }
 }
