@@ -967,6 +967,15 @@ wing[data-side="right"] {
   height: 100%;
   border: none;
   overflow: auto;
+  pointer-events: auto; /* Enable pointer events */
+}
+
+/* Add a new style for the iframe container */
+.iframe-container {
+  width: 100%;
+  height: calc(100% - 40px); /* Subtract the height of the close button */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS devices */
 }
 
 .close-button {
