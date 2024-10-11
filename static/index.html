@@ -31,7 +31,7 @@
 
 
 <body class="hack">
-  <div class="clock-div">
+  <!-- <div class="clock-div">
     <div class="clockcontainer">
       <svg class="clock -large" viewBox="0 0 100 100" width="50" height="50">
         <circle class="surface" cx="50" cy="50" r="45" />
@@ -43,7 +43,7 @@
       </svg>
     </div>
     <br />
-  </div>
+  </div> -->
   <br />
 
   <div class="name">
@@ -52,7 +52,7 @@
   </div>
   <div class="main container">
     <div class="center">
-      <a target="_blank" href="https://moonjump.app/jump">
+      <a target="_blank" href="https://moonjump.app/hn">
         <img class="center" src="/static/assets/img/sun.svg" width="80%" alt="" />
       </a>
     </div>
@@ -148,14 +148,65 @@
         document.getElementById('jump-iframe').src = 'about:blank';
       }
 
-      document.querySelector('.jump-circle').addEventListener('click', function () {
+      function loadJumpUrl() {
+        const jumpCircle = document.querySelector('.jump-circle');
+        const iframe = document.getElementById('jump-iframe');
+        const jumpResult = document.getElementById('jump-result');
+
+
+
+        function loadContent(url) {
+          jumpCircle.classList.add('rotating');
+          // Use fetch to check for X-Frame-Options header before embedding the URL
+          fetch(url, { method: 'HEAD' }) // Only fetch headers, not the whole page
+            .then(response => {
+              if (response.headers.get('X-Frame-Options')) {
+                console.error(`Cannot embed ${url} due to X-Frame-Options restrictions.`);
+                jumpCircle.classList.remove('rotating');
+                alert("This content cannot be displayed due to restrictions by the target site.");
+                return;
+              }
+
+              // Proceed to embed the content if no X-Frame-Options restriction is found
+              iframe.src = url;
+              jumpResult.style.display = 'block';
+
+              // Add an event listener to stop the rotation when the iframe loads successfully
+              iframe.onload = function () {
+                jumpCircle.classList.remove('rotating');
+              };
+
+              // Set a timeout to stop the rotation if the iframe doesn't load within 10 seconds
+              setTimeout(() => {
+                jumpCircle.classList.remove('rotating');
+              }, 10000);
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              loadJumpUrl(); // Retry the fetch
+              jumpCircle.classList.remove('rotating');
+            });
+        }
+
+        // Fetch the jump URL
         fetch('/jump')
-          .then(response => response.text())
-          .then(url => {
-            document.getElementById('jump-iframe').src = url;
-            document.getElementById('jump-result').style.display = 'block';
+          .then(response => {
+            if (response.status !== 200) {
+              console.error('Invalid response status, retrying...');
+              return fetch('/jump').then(res => res.text());
+            }
+            return response.text();
           })
-          .catch(error => console.error('Error:', error));
+          .then(url => loadContent(url))
+          .catch(error => {
+            console.error('Error:', error);
+            loadJumpUrl(); // Retry the fetch
+            jumpCircle.classList.remove('rotating');
+          });
+      }
+
+      document.querySelector('.jump-circle').addEventListener('click', function () {
+        loadJumpUrl();
       });
 
       // Prevent scrolling on the main page when the iframe is open
@@ -168,19 +219,14 @@
         updateCardImage();
 
         jumpCircle.addEventListener('click', function () {
-          this.classList.add('rotating');
+          this.classList.add('clicked');
+          updateCardImage();
           setTimeout(() => {
-            this.classList.remove('rotating');
-          }, 1000); // Remove the class after 1 second (duration of rotation)
+            this.classList.remove('clicked');
+          }, 1000);
         });
       });
-      document.querySelector('.jump-circle').addEventListener('click', function () {
-        this.classList.add('clicked');
-        updateCardImage();
-        setTimeout(() => {
-          this.classList.remove('clicked');
-        }, 1000);
-      });
+
       // Function to get a random card image URL
       function getRandomCardImageUrl() {
         const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
@@ -204,8 +250,6 @@
         const newImageUrl = getRandomCardImageUrl();
         cardImage.src = newImageUrl;
       }
-
-
     </script>
 
 </body>
