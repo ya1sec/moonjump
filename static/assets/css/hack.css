@@ -979,7 +979,7 @@ wing[data-side="right"] {
 }
 
 .jump-circle.rotating {
-  animation: pulse 2s infinite ease-in-out, rotate 1s linear;
+  animation: pulse 2s infinite ease-in-out, rotate 1s linear infinite;
 }
 
 .jump-circle.clicked {
