@@ -42,11 +42,11 @@ def jump():
             return redirect('/hn')
     
     # If no working link is found after max_attempts, return a fallback URL
-    return redirect('/random')
+    return redirect('/marginalia_random')
 
 # random
-@app.route('/random')
-def random():
+@app.route('/marginalia_random')
+def marginalia_random():
     try:
         link = Search().random()
         return redirect(link)
