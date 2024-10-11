@@ -25,6 +25,8 @@ def jump():
                 a = Arena()
                 a.get_channel_contents()
                 link = a.get_item_url()
+                print(f"Arena link: {link}")
+                return link
             else:
                 link = Search().random()
                 print(f"Random link: {link}")
@@ -37,10 +39,19 @@ def jump():
             else:
                 print(f"Link {link} is not accessible.")
         except Exception as e:
-            return redirect('/jump')
+            return redirect('/hn')
     
     # If no working link is found after max_attempts, return a fallback URL
-    return redirect('/hn')
+    return redirect('/random')
+
+# random
+@app.route('/random')
+def random():
+    try:
+        link = Search().random()
+        return redirect(link)
+    except Exception as e:
+        return redirect('/hn')
 
 @app.route('/arena')
 def arena():
