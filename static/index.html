@@ -163,29 +163,42 @@
         const jumpResult = document.getElementById('jump-result');
         const loadingGif = document.getElementById('loading-gif');
 
-        function loadContent(url) {
+        function loadContent(url, canEmbed) {
           jumpCircle.classList.add('rotating');
           jumpResult.style.display = 'block';
           loadingGif.style.display = 'block';
           iframe.style.display = 'none';
 
-          iframe.src = url;
-          iframe.onload = function () {
-            jumpCircle.classList.remove('rotating');
-            loadingGif.style.display = 'none';
-            iframe.style.display = 'block';
-          };
+          if (canEmbed) {
+            iframe.src = url;
+            iframe.onload = function () {
+              jumpCircle.classList.remove('rotating');
+              loadingGif.style.display = 'none';
+              iframe.style.display = 'block';
+            };
 
-          iframe.onerror = function () {
-            console.error('Error loading content');
-            getNewUrl();
-          };
+            iframe.onerror = function () {
+              console.error('Error loading content');
+              getNewUrl();
+            };
+          } else {
+            // If the content can't be embedded, open it in a new tab
+            window.open(url, '_blank');
+            closeJumpResult();
+            jumpCircle.classList.remove('rotating');
+          }
         }
 
         function getNewUrl() {
           fetch('/jump')
-            .then(response => response.text())
-            .then(url => loadContent(url))
+            .then(response => response.json())
+            .then(data => {
+              if (data.url) {
+                loadContent(data.url, data.can_embed);
+              } else {
+                throw new Error('No URL returned from server');
+              }
+            })
             .catch(error => {
               console.error('Error:', error);
               jumpCircle.classList.remove('rotating');

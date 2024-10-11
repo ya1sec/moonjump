@@ -25,7 +25,6 @@ def jump():
                 a = Arena()
                 a.get_channel_contents()
                 link = a.get_item_url()
-                # if not https, get another link
                 if not link.startswith('https'):
                     print("No https, getting another link")
                     continue
@@ -37,23 +36,21 @@ def jump():
                     continue
                 print(f"Random link: {link}")
 
-            # Check if the link is accessible
+            # Check if the link is accessible and can be embedded
             response = requests.head(link, allow_redirects=True, timeout=5)
-            # if x frame options is set to deny, get another link
-            if response.headers.get('X-Frame-Options') == 'DENY' or response.headers.get('X-Frame-Options') == 'SAMEORIGIN':
-                print("X-Frame-Options is set to DENY, getting another link")
+            if response.headers.get('X-Frame-Options') in ['DENY', 'SAMEORIGIN']:
+                print("X-Frame-Options is set to DENY or SAMEORIGIN, getting another link")
                 continue
             if response.status_code == 200:
-                return link
+                return jsonify({"url": link, "can_embed": True})
             else:
                 print(f"Link {link} is not accessible.")
 
-            return link
         except Exception as e:
-            return redirect('/hn')
-    
+            print(f"Error: {str(e)}")
+
     # If no working link is found after max_attempts, return a fallback URL
-    return redirect('/marginalia_random')
+    return jsonify({"url": "https://moonjump.app", "can_embed": False})
 
 @app.route('/fetch-content', methods=['POST'])
 def fetch_content():
