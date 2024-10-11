@@ -59,6 +59,14 @@
     <!-- Add the iframe for displaying the jump result -->
     <div id="jump-result" class="center" style="display: none;">
       <button class="close-button" onclick="closeJumpResult()">&times;</button>
+      <!-- Replace the existing loading-gif div with this updated version -->
+      <div id="loading-gif"
+        style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 50vh;">
+        <!-- <img
+          src="https://blogger.googleusercontent.com/img/a/AVvXsEjX4EoeGFudoVvuo99XprLTSZNdEfCTsmt2Iec5UXCSKnAGlJ8okt9FZ508IHtMMhfZPnpnsXy-0H7jC7Dtorj7LG0iY327YihazMMWfytH87np0HG_n_G_pGDMnjOf0AuCQE8lTNxjxqzv0EGAETz6Azm_A5UnrscntYUss6almbFJn9Tn_0LSDXhiRA=s175"
+          alt="Loading..." style="height: 100%; width: auto; object-fit: contain;"> -->
+        LOADING...so many sites...
+      </div>
       <div class="iframe-container">
         <iframe id="jump-iframe" frameborder="0"
           sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
@@ -141,68 +149,52 @@
     <script src="/static/assets/js/lib/moment-timezone-with-data.js"></script>
     <script src="/static/assets/js/main.js"></script>
 
-    <!-- Add new script for jump functionality -->
+    <!-- Replace the existing script for jump functionality with this updated version -->
     <script>
       function closeJumpResult() {
         document.getElementById('jump-result').style.display = 'none';
         document.getElementById('jump-iframe').src = 'about:blank';
+        document.getElementById('loading-gif').style.display = 'none';
       }
 
       function loadJumpUrl() {
         const jumpCircle = document.querySelector('.jump-circle');
         const iframe = document.getElementById('jump-iframe');
         const jumpResult = document.getElementById('jump-result');
-
-
+        const loadingGif = document.getElementById('loading-gif');
 
         function loadContent(url) {
           jumpCircle.classList.add('rotating');
-          // Use fetch to check for X-Frame-Options header before embedding the URL
-          fetch(url, { method: 'HEAD' }) // Only fetch headers, not the whole page
-            .then(response => {
-              if (response.headers.get('X-Frame-Options')) {
-                console.error(`Cannot embed ${url} due to X-Frame-Options restrictions.`);
-                jumpCircle.classList.remove('rotating');
-                alert("This content cannot be displayed due to restrictions by the target site.");
-                return;
-              }
+          jumpResult.style.display = 'block';
+          loadingGif.style.display = 'block';
+          iframe.style.display = 'none';
 
-              // Proceed to embed the content if no X-Frame-Options restriction is found
-              iframe.src = url;
-              jumpResult.style.display = 'block';
+          iframe.src = url;
+          iframe.onload = function () {
+            jumpCircle.classList.remove('rotating');
+            loadingGif.style.display = 'none';
+            iframe.style.display = 'block';
+          };
 
-              // Add an event listener to stop the rotation when the iframe loads successfully
-              iframe.onload = function () {
-                jumpCircle.classList.remove('rotating');
-              };
+          iframe.onerror = function () {
+            console.error('Error loading content');
+            getNewUrl();
+          };
+        }
 
-              // Set a timeout to stop the rotation if the iframe doesn't load within 10 seconds
-              setTimeout(() => {
-                jumpCircle.classList.remove('rotating');
-              }, 10000);
-            })
+        function getNewUrl() {
+          fetch('/jump')
+            .then(response => response.text())
+            .then(url => loadContent(url))
             .catch(error => {
               console.error('Error:', error);
-              loadJumpUrl(); // Retry the fetch
               jumpCircle.classList.remove('rotating');
+              loadingGif.style.display = 'none';
+              alert("An error occurred while loading the content. Please try again.");
             });
         }
 
-        // Fetch the jump URL
-        fetch('/jump')
-          .then(response => {
-            if (response.status !== 200) {
-              console.error('Invalid response status, retrying...');
-              return fetch('/jump').then(res => res.text());
-            }
-            return response.text();
-          })
-          .then(url => loadContent(url))
-          .catch(error => {
-            console.error('Error:', error);
-            loadJumpUrl(); // Retry the fetch
-            jumpCircle.classList.remove('rotating');
-          });
+        getNewUrl();
       }
 
       document.querySelector('.jump-circle').addEventListener('click', function () {

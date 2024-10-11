@@ -44,6 +44,18 @@ def jump():
     # If no working link is found after max_attempts, return a fallback URL
     return redirect('/marginalia_random')
 
+@app.route('/fetch-content', methods=['POST'])
+def fetch_content():
+    url = request.json['url']
+    try:
+        response = requests.get(url)
+        return jsonify({
+            'content': response.text,
+            'content_type': response.headers.get('Content-Type', '')
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 # random
 @app.route('/marginalia_random')
 def marginalia_random():
