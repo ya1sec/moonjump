@@ -40,7 +40,7 @@ def jump():
             return redirect('/jump')
     
     # If no working link is found after max_attempts, return a fallback URL
-    return 'https://moonjump.app/jump'
+    return redirect('/hn')
 
 @app.route('/arena')
 def arena():
