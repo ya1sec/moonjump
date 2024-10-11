@@ -25,19 +25,30 @@ def jump():
                 a = Arena()
                 a.get_channel_contents()
                 link = a.get_item_url()
+                # if not https, get another link
+                if not link.startswith('https'):
+                    print("No https, getting another link")
+                    continue
                 print(f"Arena link: {link}")
-                return link
             else:
                 link = Search().random()
+                if not link:
+                    print("No link found from marginalia, getting another link")
+                    continue
                 print(f"Random link: {link}")
-                return link
 
             # Check if the link is accessible
             response = requests.head(link, allow_redirects=True, timeout=5)
+            # if x frame options is set to deny, get another link
+            if response.headers.get('X-Frame-Options') == 'DENY' or response.headers.get('X-Frame-Options') == 'SAMEORIGIN':
+                print("X-Frame-Options is set to DENY, getting another link")
+                continue
             if response.status_code == 200:
                 return link
             else:
                 print(f"Link {link} is not accessible.")
+
+            return link
         except Exception as e:
             return redirect('/hn')
     
