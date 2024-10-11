@@ -54,6 +54,9 @@
     <div class="center">
       <a target="_blank" href="https://moonjump.app/hn">
         <img class="center" src="/static/assets/img/sun.svg" width="80%" alt="" />
+        <p class="center" style="text-align: center;">
+          PICK A CARD
+        </p>
       </a>
     </div>
     <!-- Add the iframe for displaying the jump result -->
@@ -81,7 +84,7 @@
     </div> -->
     <!-- Replace the existing jump button div with this updated version -->
     <div id="jump-button" class="center jump-button-container">
-      <img class="jump-circle" src="" alt="Random Card" />
+      <img class="jump-circle" src="https://deckofcardsapi.com/static/img/back.png" alt="Random Card" />
       <!-- <form id="form" class="search-form">
         <input type="search" placeholder="Search..." id="search-bar" />
         <button id="search-button" type="submit">Search</button>
@@ -221,6 +224,7 @@
 
       document.addEventListener('DOMContentLoaded', function () {
         const jumpCircle = document.querySelector('.jump-circle');
+        //jumpCircle.src = 'https://deckofcardsapi.com/static/img/back.png';
         updateCardImage();
 
         jumpCircle.addEventListener('click', function () {
