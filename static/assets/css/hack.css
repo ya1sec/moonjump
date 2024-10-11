@@ -1074,3 +1074,39 @@ wing[data-side="right"] {
   }
 
 }
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+}
+
+.toolbar button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: 30px;
+}
+
+.toolbar .jump-circle {
+  cursor: pointer;
+  width: 80px;
+  height: auto;
+}
+
+.toolbar button:focus {
+  outline: none;
+}
+
+.toolbar button:hover {
+  color: #007BFF;
+}
+
+.toolbar img {
+  transition: transform 0.3s ease;
+}
+
+.toolbar img.clicked {
+  transform: rotateY(180deg);
+}
