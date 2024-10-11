@@ -34,6 +34,9 @@ def jump():
                 if not link:
                     print("No link found from marginalia, getting another link")
                     continue
+                if not link.startswith('https'):
+                    print("No https, getting another link")
+                    continue
                 print(f"Random link: {link}")
 
             # Check if the link is accessible and can be embedded
