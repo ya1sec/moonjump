@@ -52,9 +52,10 @@
   </div>
   <div class="main container">
     <div class="center">
-      <a target="_blank" href="https://moonjump.app/hn">
-        <img class="center" src="/static/assets/img/sun.svg" width="80%" alt="" />
-      </a>
+      <img class="center" src="/static/assets/img/sun.svg" width="80%" alt="" />
+      <p class="center" style="text-align: center;">
+        PICK A CARD
+      </p>
     </div>
     <!-- Add the iframe for displaying the jump result -->
     <div id="jump-result" class="center" style="display: none;">
@@ -62,9 +63,6 @@
       <!-- Replace the existing loading-gif div with this updated version -->
       <div id="loading-gif"
         style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 50vh;">
-        <!-- <img
-          src="https://blogger.googleusercontent.com/img/a/AVvXsEjX4EoeGFudoVvuo99XprLTSZNdEfCTsmt2Iec5UXCSKnAGlJ8okt9FZ508IHtMMhfZPnpnsXy-0H7jC7Dtorj7LG0iY327YihazMMWfytH87np0HG_n_G_pGDMnjOf0AuCQE8lTNxjxqzv0EGAETz6Azm_A5UnrscntYUss6almbFJn9Tn_0LSDXhiRA=s175"
-          alt="Loading..." style="height: 100%; width: auto; object-fit: contain;"> -->
         LOADING...so many sites...
       </div>
       <div class="iframe-container">
@@ -80,12 +78,18 @@
       </form>
     </div> -->
     <!-- Replace the existing jump button div with this updated version -->
+    <!-- // div that will have jump button in the middle, share button to the right, and x button to the right -->
+    <!-- <div id="jump-button" class="center jump-button-container">
+      <img class="jump-circle" src="https://deckofcardsapi.com/static/img/back.png" alt="Random Card" />
+    </div> -->
     <div id="jump-button" class="center jump-button-container">
-      <img class="jump-circle" src="" alt="Random Card" />
-      <!-- <form id="form" class="search-form">
-        <input type="search" placeholder="Search..." id="search-bar" />
-        <button id="search-button" type="submit">Search</button>
-      </form> -->
+      <div class="toolbar">
+        <button id="share-button">
+          share
+        </button>
+        <img class="jump-circle" src="https://deckofcardsapi.com/static/img/back.png" alt="Random Card" />
+        <button id="close-button">close</button>
+      </div>
     </div>
 
 
@@ -156,7 +160,39 @@
         document.getElementById('jump-iframe').src = 'about:blank';
         document.getElementById('loading-gif').style.display = 'none';
       }
+      function copyToClipboard(text) {
+        const tempInput = document.createElement('input');
+        tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+      }
 
+      function shareIframeUrl() {
+        const iframe = document.getElementById('jump-iframe');
+        const url = iframe.src;
+
+        if (!url || url === 'about:blank') {
+          alert('No content to share.');
+          return;
+        }
+
+        if (navigator.share) {
+          navigator.share({
+            title: document.title,
+            url: url
+          }).then(() => {
+            console.log('Thanks for sharing!');
+          })
+            .catch(console.error);
+        } else {
+          // Fallback for browsers that do not support the Web Share API
+          copyToClipboard(url);
+          alert('URL copied to clipboard');
+        }
+      }
       function loadJumpUrl() {
         const jumpCircle = document.querySelector('.jump-circle');
         const iframe = document.getElementById('jump-iframe');
@@ -213,7 +249,8 @@
       document.querySelector('.jump-circle').addEventListener('click', function () {
         loadJumpUrl();
       });
-
+      document.getElementById('close-button').addEventListener('click', closeJumpResult);
+      document.getElementById('share-button').addEventListener('click', shareIframeUrl);
       // Prevent scrolling on the main page when the iframe is open
       document.getElementById('jump-result').addEventListener('wheel', function (e) {
         e.stopPropagation();
@@ -221,6 +258,7 @@
 
       document.addEventListener('DOMContentLoaded', function () {
         const jumpCircle = document.querySelector('.jump-circle');
+        //jumpCircle.src = 'https://deckofcardsapi.com/static/img/back.png';
         updateCardImage();
 
         jumpCircle.addEventListener('click', function () {

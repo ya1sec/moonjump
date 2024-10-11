@@ -8,6 +8,51 @@ from lib.search import Search
 
 app = Flask(__name__, static_url_path='/static')
 
+# class RandomWikipediaPage:
+#     def __init__(self):
+#         self.CATEGORIES = [
+#             'philosophy_of_mind',
+#             'computer_programming',
+#             'pseudomathematics',
+#         ]
+
+
+#     def get_url(self):
+#         base_url = 'https://en.wikipedia.org/wiki/Special:RandomInCategory/'
+#         category = random.choice(self.CATEGORIES)
+#         url = base_url + category
+#         return url
+class RandomWikipediaPage:
+    def __init__(self):
+        self.CATEGORIES = [
+            'philosophy_of_mind',
+            'computer_programming',
+            'pseudomathematics',
+            'carl_jung',
+            'psychoanalysis',
+        ]
+
+    def get_url(self):
+        # Pick a random category
+        category = random.choice(self.CATEGORIES)
+
+        # Use the Wikipedia API to get a list of pages in the chosen category
+        url = f'https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:{category}&cmlimit=500&format=json'
+        response = requests.get(url)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()
+            pages = data.get('query', {}).get('categorymembers', [])
+
+            # Choose a random page from the category
+            if pages:
+                random_page = random.choice(pages)
+                page_title = random_page['title'].replace(' ', '_')
+                return f'https://en.wikipedia.org/wiki/{page_title}'
+        
+        # Fallback in case of an error or no pages
+        return f'https://en.wikipedia.org/wiki/Category:{category}'
 # Serve index.html
 @app.route('/')
 def index():
@@ -15,7 +60,7 @@ def index():
 
 @app.route('/jump')
 def jump():
-    types = ['arena', 'marginalia']
+    types = ['arena', 'arena', 'marginalia', 'marginalia', 'wikipedia']
     max_attempts = 5  # Maximum number of attempts to find a working link
 
     for _ in range(max_attempts):
@@ -29,13 +74,18 @@ def jump():
                     print("No https, getting another link")
                     continue
                 print(f"Arena link: {link}")
+            elif random_type == 'wikipedia':
+                link = RandomWikipediaPage().get_url()
             else:
                 link = Search().random()
                 if not link:
-                    print("No link found from marginalia, getting another link")
-                    continue
+                    print("No link found from marginalia, getting WIKI link")
+                    link = RandomWikipediaPage().get_url()
+                    # continue
                 if not link.startswith('https'):
                     print("No https, getting another link")
+                    # print("No https, getting WIKI link")
+                    # link = RandomWikipediaPage().get_url()
                     continue
                 print(f"Random link: {link}")
 
@@ -53,7 +103,7 @@ def jump():
             print(f"Error: {str(e)}")
 
     # If no working link is found after max_attempts, return a fallback URL
-    return jsonify({"url": "https://moonjump.app", "can_embed": False})
+    return jsonify({"url": RandomWikipediaPage().get_url(), "can_embed": True})
 
 @app.route('/fetch-content', methods=['POST'])
 def fetch_content():
