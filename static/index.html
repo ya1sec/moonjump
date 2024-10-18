@@ -70,19 +70,25 @@
           sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
       </div>
     </div>
-    <!-- <div id="jump-button" class="center jump-button-container">
-      <img class="jump-circle" src="/static/assets/img/sun-purple.svg" width="80px" alt="" />
-      <form id="form" class="search-form">
-        <input type="search" placeholder="Search..." id="search-bar">
-        <button id="search-button" type="submit">Search</button>
-      </form>
-    </div> -->
+    <div id="jump-button" class="center jump-button-container">
+      <div class="toolbar">
+        <form id="form" class="search-form">
+          <button id="share-button">
+            share
+          </button>
+          <img class="jump-circle" src="/static/assets/img/sun-purple.svg" width="80px" alt="" />
+          <!-- <button id="search-button" type="submit">Search</button> -->
+          <button id="close-button" class="hack">close</button>
+        </form>
+      </div>
+      <input type="search" placeholder="Search..." id="search-bar">
+    </div>
     <!-- Replace the existing jump button div with this updated version -->
     <!-- // div that will have jump button in the middle, share button to the right, and x button to the right -->
     <!-- <div id="jump-button" class="center jump-button-container">
       <img class="jump-circle" src="https://deckofcardsapi.com/static/img/back.png" alt="Random Card" />
     </div> -->
-    <div id="jump-button" class="center jump-button-container">
+    <!-- <div id="jump-button" class="center jump-button-container">
       <div class="toolbar">
         <button id="share-button">
           share
@@ -90,7 +96,7 @@
         <img class="jump-circle" src="https://deckofcardsapi.com/static/img/back.png" alt="Random Card" />
         <button id="close-button">close</button>
       </div>
-    </div>
+    </div> -->
 
 
     <div class="info" style="display: none;">
@@ -259,11 +265,11 @@
       document.addEventListener('DOMContentLoaded', function () {
         const jumpCircle = document.querySelector('.jump-circle');
         //jumpCircle.src = 'https://deckofcardsapi.com/static/img/back.png';
-        updateCardImage();
+        // updateCardImage();
 
         jumpCircle.addEventListener('click', function () {
           this.classList.add('clicked');
-          updateCardImage();
+          //updateCardImage();
           setTimeout(() => {
             this.classList.remove('clicked');
           }, 1000);
