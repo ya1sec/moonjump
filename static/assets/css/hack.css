@@ -10,6 +10,7 @@ body {
   font-family: Hack, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace, serif;
   background-color: #f5f5f5;
+  font-size: 12px;
 }
 
 /* Top Toolbar */
@@ -53,12 +54,23 @@ body {
 #main-content {
   margin-top: 100px;
   margin-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 180px);
   text-align: center;
+  gap: 20px;
 }
 
 #main-content #logo {
   max-width: 200px;
-  margin-top: 100px;
+}
+
+#main-content p {
+  max-width: 400px;
+  line-height: 1.5;
+  color: #666;
 }
 
 /* Jump Result */
