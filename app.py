@@ -189,15 +189,19 @@ def hn():
 
 @app.route('/search')
 def search():
-    # Accept query from user, replace spaces with +
-    query = request.args.get('query')
+    # Get query parameter, default to empty string if not provided
+    query = request.args.get('query', '')
+    if not query:
+        return jsonify({"error": "No search query provided"}), 400
+        
+    # Replace spaces with +
     query = query.replace(' ', '+')
     s = Search()
     link = s.get_link(query)
     try:
-        return redirect(link)
+        return jsonify({"url": link, "can_embed": True})
     except Exception as e:
-        return redirect('https://moonjump.app')
+        return jsonify({"error": str(e)}), 500
 
 # Talisman(app, content_security_policy=None)
 

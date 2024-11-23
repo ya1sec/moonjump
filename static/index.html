@@ -1,300 +1,200 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <!--  Essential META Tags -->
-  <meta property="og:title" content="Moonjump">
-  <meta property="og:type" content="app" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/ya1sec/moonjump/main/static/assets/moonjump.png">
-  <meta property="og:image:width" content="200">
-  <meta property="og:image:height" content="200">
-  <meta property="og:url" content="https://moonjump.app">
-  <meta property="og:description" content="A server that redirects you to a random page.">
-  <meta property="og:site_name" content="Moonjump">
-  <meta name="twitter:image:alt" content="Moonjump">
-  <meta name="twitter:card" content="https://raw.githubusercontent.com/ya1sec/moonjump/main/static/assets/moonjump.png">
-
+  <meta charset="UTF-8">
   <title>Moonjump</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Meta tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Add Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- CSS -->
   <link rel="stylesheet" type="text/css" media="screen" href="/static/assets/css/hack.css" />
-  <link rel="stylesheet" type="text/css" media="screen" href="/static//assets/css/fonts.css" />
-  <link rel="stylesheet" type="text/css" media="screen" href="/static/assets/css/fontstyles.css" />
-  <!-- <link
-      rel="stylesheet"
-      href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css"
-    /> -->
-  <link rel="icon" type="image/png"
-    href="https://raw.githubusercontent.com/ya1sec/moonjump/main/static/assets/moonjump.png" />
-  <!-- <script src="/static/assets/js/butterflies.js"></script> -->
+  <!-- Add custom Tailwind config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'neon-red': '#ff0033',
+          },
+        },
+      },
+    }
+  </script>
 </head>
 
-
-<body class="hack">
-  <!-- <div class="clock-div">
-    <div class="clockcontainer">
-      <svg class="clock -large" viewBox="0 0 100 100" width="50" height="50">
-        <circle class="surface" cx="50" cy="50" r="45" />
-        <g class="pointers">
-          <line class="s_pointer" x1="50" y1="60" x2="50" y2="13" />
-          <line class="h_pointer" x1="50" y1="50" x2="50" y2="27" />
-          <line class="m_pointer" x1="50" y1="50" x2="50" y2="17" />
-        </g>
-      </svg>
+<body>
+  <!-- Top Toolbar -->
+  <div id="top-toolbar">
+    <div class="relative flex items-center">
+      <input type="search" id="search-bar" placeholder="Search..." class="pe-10">
+      <span class="absolute inset-y-0 end-3 grid place-content-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-4 h-4 text-gray-500">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+      </span>
     </div>
-    <br />
-  </div> -->
-  <br />
-
-  <div class="name">
-    <!-- <br /> -->
-    <!-- <small class="moonjump">info</small> -->
   </div>
-  <div class="main container">
-    <div class="center">
-      <img class="center" src="/static/assets/img/sun.svg" width="80%" alt="" />
-      <p class="center" style="text-align: center;">
-        PICK A CARD
-      </p>
+
+  <!-- Main Content -->
+  <div id="main-content">
+    <img id="logo" src="/static/assets/img/sun.svg" alt="Moonjump Logo">
+    <p>Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.</p>
+  </div>
+
+  <!-- Jump Result (Iframe) -->
+  <div id="jump-result" style="display: none;">
+    <button class="close-button">&times;</button>
+    <div class="iframe-container">
+      <iframe id="jump-iframe" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
     </div>
-    <!-- Add the iframe for displaying the jump result -->
-    <div id="jump-result" class="center" style="display: none;">
-      <button class="close-button" onclick="closeJumpResult()">&times;</button>
-      <!-- Replace the existing loading-gif div with this updated version -->
-      <div id="loading-gif"
-        style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 50vh;">
-        LOADING...so many sites...
-      </div>
-      <div class="iframe-container">
-        <iframe id="jump-iframe" frameborder="0"
-          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
-      </div>
+  </div>
+
+  <!-- Info Section -->
+  <div id="info-section" style="display: none;">
+    <div id="info-content">
+      <h2>About Moonjump</h2>
+      <p>Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.</p>
+      <!-- Add more informational content as needed -->
+      <button id="close-info-button">Close</button>
     </div>
-    <!-- <div id="jump-button" class="center jump-button-container">
-      <img class="jump-circle" src="/static/assets/img/sun-purple.svg" width="80px" alt="" />
-      <form id="form" class="search-form">
-        <input type="search" placeholder="Search..." id="search-bar">
-        <button id="search-button" type="submit">Search</button>
-      </form>
-    </div> -->
-    <!-- Replace the existing jump button div with this updated version -->
-    <!-- // div that will have jump button in the middle, share button to the right, and x button to the right -->
-    <!-- <div id="jump-button" class="center jump-button-container">
-      <img class="jump-circle" src="https://deckofcardsapi.com/static/img/back.png" alt="Random Card" />
-    </div> -->
-    <div id="jump-button" class="center jump-button-container">
-      <div class="toolbar">
-        <button id="share-button">
-          share
-        </button>
-        <img class="jump-circle" src="https://deckofcardsapi.com/static/img/back.png" alt="Random Card" />
-        <button id="close-button">close</button>
-      </div>
-    </div>
+  </div>
 
+  <!-- Bottom Toolbar -->
+  <div id="bottom-toolbar">
+    <span class="inline-flex -space-x-px overflow-hidden rounded-full border bg-white/80 shadow-sm">
+      <button id="share-button"
+        class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
+        Share
+      </button>
 
-    <div class="info" style="display: none;">
-      <p class="email">
-        <a target="_blank" href="https://moonjump.app/jump" class="bg-term">{ <span class="">Moonjump</span> }</a>
-      </p>
-      <p>⚐ ⚑</p>
-      <p>To whom it may concern,</p>
-      <p>
-        Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.
-      </p>
-      <p>The easiest way to jump is to click the large logo at the center of this page. You can also add <a
-          target="_blank" href="https://moonjump.app/jump" class="">moonjump.app/jump</a> to your bookmarks bar.</p>
-      <p>Moonjump aims to spark curiosity and provide a portal to the vast collection of interesting material hidden
-        by
-        the commercial web.</p>
-      <p>The source material is aggregated with care by users of Are.na, Hacker News, and Gossip Web. Since this
-        accumulation is performed by hand, pages are saved because they had an effect on the users who saved them. The
-        goal is to find something that has an effect on you.</p>
-      <p>This collection of curious content saved to Are.na channels or posted on Hacker News is a trove of
-        handcrafted
-        treasures. But as our habits have taught us in the
-        contemporary
-        era of web surfing, we are prone to doomscrolling (and even doom-bookmarking).</p>
-      <p>Moonjump makes a decision for you
-        by selecting something random from a deep sea of unconventional content. Results may be peculiar, profound, or
-        absolute nonsense. But you can always close the tab and jump again.</p>
-      <p>
-        The search engine is powered by <a target="_blank" href="https://search.marginalia.nu" class="">Marginalia</a>,
-        a
-        project
-        which indexes non-commercial content and may surprise you with sites you perhaps weren't aware of. Search
-        queries
-        on Moonjump use the Marginalia API to redirect you to a random result.
-      </p>
-      <p>To jump to a random site from Are.na or Hacker News, click the links above the search bar. Otherwise, click
-        on
-        the large logo to jump blindly.</p>
+      <button id="jump-button"
+        class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-neutral-600">
+          <path
+            d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"
+            fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
+        </svg>
+      </button>
 
-      <p>Learn more tricks and contribute on GitHub:</p>
-      <a href="https://github.com/ya1sec/moonjump" target="_blank" class="icon">
-        <small>
-          <span class="ankit">
-            <img class="icon" width="20" src="/static/assets/img/gh.svg" alt="">
-          </span>
-        </small>
-      </a>
-      <br>
-      <br>
-      <small>
-        <a href="https://ya1sec.com" target="_blank">
-          <p class="">ya1sec 2022</p>
-        </a>
-      </small>
-    </div>
+      <button id="close-button"
+        class="close-button inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative">
+        Close
+      </button>
+    </span>
+  </div>
 
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const jumpButton = document.getElementById('jump-button');
+      const shareButton = document.getElementById('share-button');
+      const closeButtons = document.querySelectorAll('.close-button');
+      const jumpResult = document.getElementById('jump-result');
+      const jumpIframe = document.getElementById('jump-iframe');
+      const infoButton = document.getElementById('info-button');
+      const searchBar = document.getElementById('search-bar');
+      const infoSection = document.getElementById('info-section');
 
-    <script src="/static/assets/js/lib/jquery-3.3.1.min.js"></script>
-    <script src="/static/assets/js/lib/moment.js"></script>
-    <script src="/static/assets/js/lib/moment-timezone-with-data.js"></script>
-    <script src="/static/assets/js/main.js"></script>
+      // Jump functionality
+      jumpButton.addEventListener('click', function () {
+        fetch('/jump')
+          .then(response => response.json())
+          .then(data => {
+            if (data.url) {
+              if (data.can_embed) {
+                jumpIframe.src = data.url;
+                jumpResult.style.display = 'block';
+              } else {
+                window.open(data.url, '_blank');
+              }
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      });
 
-    <!-- Replace the existing script for jump functionality with this updated version -->
-    <script>
-      function closeJumpResult() {
-        document.getElementById('jump-result').style.display = 'none';
-        document.getElementById('jump-iframe').src = 'about:blank';
-        document.getElementById('loading-gif').style.display = 'none';
-      }
-      function copyToClipboard(text) {
-        const tempInput = document.createElement('input');
-        tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
-        tempInput.value = text;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-      }
-
-      function shareIframeUrl() {
-        const iframe = document.getElementById('jump-iframe');
-        const url = iframe.src;
-
+      // Share functionality
+      shareButton.addEventListener('click', function () {
+        const url = jumpIframe.src;
         if (!url || url === 'about:blank') {
           alert('No content to share.');
           return;
         }
-
         if (navigator.share) {
           navigator.share({
-            title: document.title,
+            title: 'Check this out!',
             url: url
           }).then(() => {
             console.log('Thanks for sharing!');
-          })
-            .catch(console.error);
+          }).catch(console.error);
         } else {
           // Fallback for browsers that do not support the Web Share API
-          copyToClipboard(url);
-          alert('URL copied to clipboard');
+          alert('Your browser does not support the Web Share API');
         }
-      }
-      function loadJumpUrl() {
-        const jumpCircle = document.querySelector('.jump-circle');
-        const iframe = document.getElementById('jump-iframe');
-        const jumpResult = document.getElementById('jump-result');
-        const loadingGif = document.getElementById('loading-gif');
+      });
 
-        function loadContent(url, canEmbed) {
-          jumpCircle.classList.add('rotating');
-          jumpResult.style.display = 'block';
-          loadingGif.style.display = 'block';
-          iframe.style.display = 'none';
+      // Close functionality for both close buttons
+      closeButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          jumpResult.style.display = 'none';
+          jumpIframe.src = 'about:blank';
+        });
+      });
 
-          if (canEmbed) {
-            iframe.src = url;
-            iframe.onload = function () {
-              jumpCircle.classList.remove('rotating');
-              loadingGif.style.display = 'none';
-              iframe.style.display = 'block';
-            };
+      // Info button functionality
+      infoButton.addEventListener('click', function () {
+        infoSection.style.display = 'block';
+      });
 
-            iframe.onerror = function () {
-              console.error('Error loading content');
-              getNewUrl();
-            };
-          } else {
-            // If the content can't be embedded, open it in a new tab
-            window.open(url, '_blank');
-            closeJumpResult();
-            jumpCircle.classList.remove('rotating');
-          }
-        }
+      // Close info section
+      document.getElementById('close-info-button').addEventListener('click', function () {
+        infoSection.style.display = 'none';
+      });
 
-        function getNewUrl() {
-          fetch('/jump')
+      // Search functionality
+      searchBar.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          const query = searchBar.value.trim();
+          if (!query) return;
+
+          fetch('/search?query=' + encodeURIComponent(query))
             .then(response => response.json())
             .then(data => {
+              if (data.error) {
+                console.error('Search error:', data.error);
+                return;
+              }
               if (data.url) {
-                loadContent(data.url, data.can_embed);
-              } else {
-                throw new Error('No URL returned from server');
+                jumpIframe.src = data.url;
+                jumpResult.style.display = 'block';
               }
             })
             .catch(error => {
               console.error('Error:', error);
-              jumpCircle.classList.remove('rotating');
-              loadingGif.style.display = 'none';
-              alert("An error occurred while loading the content. Please try again.");
             });
         }
-
-        getNewUrl();
-      }
-
-      document.querySelector('.jump-circle').addEventListener('click', function () {
-        loadJumpUrl();
-      });
-      document.getElementById('close-button').addEventListener('click', closeJumpResult);
-      document.getElementById('share-button').addEventListener('click', shareIframeUrl);
-      // Prevent scrolling on the main page when the iframe is open
-      document.getElementById('jump-result').addEventListener('wheel', function (e) {
-        e.stopPropagation();
       });
 
-      document.addEventListener('DOMContentLoaded', function () {
-        const jumpCircle = document.querySelector('.jump-circle');
-        //jumpCircle.src = 'https://deckofcardsapi.com/static/img/back.png';
-        updateCardImage();
-
-        jumpCircle.addEventListener('click', function () {
-          this.classList.add('clicked');
-          updateCardImage();
-          setTimeout(() => {
-            this.classList.remove('clicked');
-          }, 1000);
-        });
+      // Add pressed state handling for jump button
+      jumpButton.addEventListener('mousedown', function () {
+        this.classList.remove('hover:scale-105');
+        this.classList.add('scale-95');
+        this.style.boxShadow = 'inset 0 0 20px rgba(255, 255, 255, 0.5)';
       });
 
-      // Function to get a random card image URL
-      function getRandomCardImageUrl() {
-        const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        const suits = ['C', 'D', 'H', 'S']; // Clubs, Diamonds, Hearts, Spades
-
-        const value = values[Math.floor(Math.random() * values.length)];
-        const suit = suits[Math.floor(Math.random() * suits.length)];
-
-        // Handle the special case where '10' is represented as '0' in the URL
-        const valueCode = value === '10' ? '0' : value;
-
-        const cardCode = `${valueCode}${suit}`;
-        const imageUrl = `https://deckofcardsapi.com/static/img/${cardCode}.svg`;
-
-        return imageUrl;
-      }
-
-      // Function to update the card image
-      function updateCardImage() {
-        const cardImage = document.querySelector('.jump-circle');
-        const newImageUrl = getRandomCardImageUrl();
-        cardImage.src = newImageUrl;
-      }
-    </script>
-
+      jumpButton.addEventListener('mouseup', function () {
+        this.classList.remove('scale-95');
+        this.classList.add('hover:scale-105');
+      });
+    });
+  </script>
 </body>
 
 </html>
