@@ -24,6 +24,8 @@
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" media="screen" href="/static/assets/css/hack.css" />
   <link rel="stylesheet" type="text/css" href="/static/assets/css/orb.css" />
+  <link rel="icon" type="image/png"
+    href="https://raw.githubusercontent.com/ya1sec/moonjump/main/static/assets/moonjump.png" />
   <!-- Add custom Tailwind config -->
   <script>
     tailwind.config = {
@@ -137,6 +139,12 @@
 
       // Jump functionality
       jumpButton.addEventListener('click', function () {
+        // Add loading state
+        const originalContent = jumpButton.innerHTML;
+        jumpButton.classList.add('loading');
+        jumpButton.innerHTML = '<div class="loading-spinner"></div><span class="loading-text">Loading...</span>';
+        jumpButton.disabled = true;
+
         fetch('/jump')
           .then(response => response.json())
           .then(data => {
@@ -144,13 +152,38 @@
               if (data.can_embed) {
                 jumpIframe.src = data.url;
                 jumpResult.style.display = 'block';
+
+                // Add event listener to detect when iframe is loaded
+                jumpIframe.onload = function () {
+                  // Restore button state
+                  jumpButton.classList.remove('loading');
+                  jumpButton.innerHTML = originalContent;
+                  jumpButton.disabled = false;
+                };
+
+                // Add timeout in case iframe fails to load
+                setTimeout(() => {
+                  if (jumpButton.classList.contains('loading')) {
+                    jumpButton.classList.remove('loading');
+                    jumpButton.innerHTML = originalContent;
+                    jumpButton.disabled = false;
+                  }
+                }, 10000); // 10 second timeout
               } else {
                 window.open(data.url, '_blank');
+                // Restore button state immediately for external links
+                jumpButton.classList.remove('loading');
+                jumpButton.innerHTML = originalContent;
+                jumpButton.disabled = false;
               }
             }
           })
           .catch(error => {
             console.error('Error:', error);
+            // Restore button state on error
+            jumpButton.classList.remove('loading');
+            jumpButton.innerHTML = originalContent;
+            jumpButton.disabled = false;
           });
       });
 

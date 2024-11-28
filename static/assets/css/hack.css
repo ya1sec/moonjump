@@ -221,9 +221,21 @@ body {
   touch-action: manipulation;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
+  transform: translateY(0);
+  will-change: transform;
 }
 
-/* Make jump button larger */
+/* Active/Pressed state - updated for better iOS support */
+.toolbar-button:active {
+  transform: translateY(2px) scale(0.98);
+  background-color: rgba(18, 18, 18, 0.8);
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: none;
+}
+
+/* Jump button specific styles */
 #jump-button {
   padding: 10px 20px;
   background-color: rgba(23, 23, 23, 0.7);
@@ -240,29 +252,44 @@ body {
   height: 16px;
 }
 
-/* Active/Pressed state */
-.toolbar-button:active {
-  transform: scale(0.95) translateY(1px);
-  background-color: rgba(18, 18, 18, 0.8);
-  border-color: rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+/* Jump button specific active state */
+#jump-button:active {
+  transform: translateY(3px) scale(0.97);
+  background-color: rgba(18, 18, 18, 0.85);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: none;
 }
 
-/* Hover state (non-touch devices) */
-@media (hover: hover) {
-  .toolbar-button:hover:not(:active) {
-    transform: translateY(-1px);
-    background-color: rgba(32, 32, 32, 0.7);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* iOS specific overrides */
+@supports (-webkit-touch-callout: none) {
+  .toolbar-button {
+    /* Ensure smooth animation reset on iOS */
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+  }
+  
+  .toolbar-button:active {
+    /* More pronounced effect for touch devices */
+    transform: translateY(3px) scale(0.96);
+  }
+  
+  #jump-button:active {
+    transform: translateY(4px) scale(0.95);
   }
 }
 
-/* Jump button specific active state */
-#jump-button:active {
-  transform: scale(0.97) translateY(1px);
-  background-color: rgba(18, 18, 18, 0.85);
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+/* Remove hover effects on touch devices */
+@media (hover: none) {
+  .toolbar-button:hover::after {
+    opacity: 0;
+  }
+  
+  .toolbar-button:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 /* Add subtle glow effect on hover */
@@ -282,4 +309,50 @@ body {
 
 .toolbar-button:hover::after {
   opacity: 1;
+}
+
+/* Update the Loading Animation styles */
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Update the loading button styles */
+#jump-button.loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px; /* Prevent button size from changing */
+}
+
+#jump-button.loading svg,
+#jump-button.loading > span:not(.loading-text) {
+  display: none;
+}
+
+#jump-button.loading .loading-spinner {
+  display: inline-block;
+}
+
+#jump-button .loading-spinner {
+  display: none;
+}
+
+/* Add loading text styles */
+.loading-text {
+  margin-left: 4px;
+  font-size: 13px;
 }
