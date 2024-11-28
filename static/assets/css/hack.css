@@ -213,11 +213,14 @@ body {
   border-radius: 8px;
   color: #fff;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13px;
   padding: 8px 16px;
   font-weight: 500;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Make jump button larger */
@@ -237,23 +240,29 @@ body {
   height: 16px;
 }
 
-.toolbar-button:hover {
-  transform: translateY(-1px);
-  background-color: rgba(32, 32, 32, 0.95);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
+/* Active/Pressed state */
 .toolbar-button:active {
-  transform: translateY(0);
+  transform: scale(0.95) translateY(1px);
   background-color: rgba(18, 18, 18, 0.95);
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Add hover effect for jump button */
-#jump-button:hover {
-  background-color: rgba(32, 32, 32, 0.98);
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+/* Hover state (non-touch devices) */
+@media (hover: hover) {
+  .toolbar-button:hover:not(:active) {
+    transform: translateY(-1px);
+    background-color: rgba(32, 32, 32, 0.95);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Jump button specific active state */
+#jump-button:active {
+  transform: scale(0.97) translateY(1px);
+  background-color: rgba(18, 18, 18, 0.98);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Add subtle glow effect on hover */

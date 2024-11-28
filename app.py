@@ -76,19 +76,47 @@ def jump():
                 try:
                     # Check if the link is accessible and can be embedded
                     response = requests.head(link, allow_redirects=True, timeout=5)
-                    if response.status_code == 200 and response.headers.get('X-Frame-Options') not in ['DENY', 'SAMEORIGIN']:
+                    
+                    # Check for X-Frame-Options and Content-Security-Policy headers
+                    x_frame_options = response.headers.get('X-Frame-Options', '').upper()
+                    csp = response.headers.get('Content-Security-Policy', '')
+                    
+                    # Skip if site blocks framing
+                    if (x_frame_options in ['DENY', 'SAMEORIGIN'] or 
+                        'frame-ancestors' in csp or 
+                        'X-Frame-Options' in csp):
+                        print(f"Site blocks framing: {link}")
+                        continue
+                    
+                    if response.status_code == 200:
                         # Try to actually connect to verify it works
                         test_response = requests.get(link, timeout=5)
                         if test_response.status_code == 200:
-                            return jsonify({"url": link, "can_embed": True})
-                except (requests.exceptions.ConnectionError, requests.exceptions.SSLError, 
-                       requests.exceptions.TooManyRedirects, requests.exceptions.RequestException) as e:
+                            # Additional check for common blocking phrases in content
+                            content = test_response.text.lower()
+                            blocking_phrases = [
+                                'blocked by chromium',
+                                'security error',
+                                'cannot be displayed in a frame',
+                                'x-frame-options',
+                                'refused to connect'
+                            ]
+                            if not any(phrase in content for phrase in blocking_phrases):
+                                return jsonify({"url": link, "can_embed": True})
+                            else:
+                                print(f"Content contains blocking phrases: {link}")
+                                continue
+                except (requests.exceptions.ConnectionError, 
+                       requests.exceptions.SSLError,
+                       requests.exceptions.TooManyRedirects, 
+                       requests.exceptions.RequestException,
+                       requests.exceptions.Timeout) as e:
                     print(f"Connection error for Arena link: {str(e)}")
-                    continue  # Try next source if connection fails
+                    continue
         except Exception as e:
             print(f"Arena error (attempt {attempt + 1}): {str(e)}")
 
-        # If Arena fails, try Marginalia
+        # Try Marginalia
         try:
             link = Search().random()
             if link and link.startswith('https'):
@@ -96,15 +124,43 @@ def jump():
                 try:
                     # Check if the link is accessible and can be embedded
                     response = requests.head(link, allow_redirects=True, timeout=5)
-                    if response.status_code == 200 and response.headers.get('X-Frame-Options') not in ['DENY', 'SAMEORIGIN']:
+                    
+                    # Check for X-Frame-Options and Content-Security-Policy headers
+                    x_frame_options = response.headers.get('X-Frame-Options', '').upper()
+                    csp = response.headers.get('Content-Security-Policy', '')
+                    
+                    # Skip if site blocks framing
+                    if (x_frame_options in ['DENY', 'SAMEORIGIN'] or 
+                        'frame-ancestors' in csp or 
+                        'X-Frame-Options' in csp):
+                        print(f"Site blocks framing: {link}")
+                        continue
+                    
+                    if response.status_code == 200:
                         # Try to actually connect to verify it works
                         test_response = requests.get(link, timeout=5)
                         if test_response.status_code == 200:
-                            return jsonify({"url": link, "can_embed": True})
-                except (requests.exceptions.ConnectionError, requests.exceptions.SSLError,
-                       requests.exceptions.TooManyRedirects, requests.exceptions.RequestException) as e:
+                            # Additional check for common blocking phrases in content
+                            content = test_response.text.lower()
+                            blocking_phrases = [
+                                'blocked by chromium',
+                                'security error',
+                                'cannot be displayed in a frame',
+                                'x-frame-options',
+                                'refused to connect'
+                            ]
+                            if not any(phrase in content for phrase in blocking_phrases):
+                                return jsonify({"url": link, "can_embed": True})
+                            else:
+                                print(f"Content contains blocking phrases: {link}")
+                                continue
+                except (requests.exceptions.ConnectionError,
+                       requests.exceptions.SSLError,
+                       requests.exceptions.TooManyRedirects,
+                       requests.exceptions.RequestException,
+                       requests.exceptions.Timeout) as e:
                     print(f"Connection error for Marginalia link: {str(e)}")
-                    continue  # Try next iteration if connection fails
+                    continue
         except Exception as e:
             print(f"Marginalia error (attempt {attempt + 1}): {str(e)}")
         
