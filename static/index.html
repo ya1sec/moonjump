@@ -10,6 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" media="screen" href="/static/assets/css/hack.css" />
+  <link rel="stylesheet" type="text/css" href="/static/assets/css/orb.css" />
   <!-- Add custom Tailwind config -->
   <script>
     tailwind.config = {
@@ -22,6 +23,7 @@
       },
     }
   </script>
+  <script src="/static/assets/js/orb.js"></script>
 </head>
 
 <body>
@@ -41,7 +43,10 @@
 
   <!-- Main Content -->
   <div id="main-content">
-    <img id="logo" src="/static/assets/img/sun.svg" alt="Moonjump Logo">
+    <div class="orb-container">
+      <div class="glow"></div>
+      <div class="orb"></div>
+    </div>
     <p>Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.</p>
   </div>
 
