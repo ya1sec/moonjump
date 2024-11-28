@@ -33,6 +33,8 @@ class RandomWikipediaPage:
         ]
 
     def get_url(self):
+        # Nov 28 2024 override:
+        return "https://en.wikipedia.org/wiki/Special:Random"
         # Pick a random category
         category = random.choice(self.CATEGORIES)
 
@@ -53,6 +55,7 @@ class RandomWikipediaPage:
         
         # Fallback in case of an error or no pages
         return f'https://en.wikipedia.org/wiki/Category:{category}'
+
 # Serve index.html
 @app.route('/')
 def index():
@@ -60,50 +63,112 @@ def index():
 
 @app.route('/jump')
 def jump():
-    types = ['arena', 'arena', 'marginalia', 'marginalia', 'wikipedia']
-    max_attempts = 5  # Maximum number of attempts to find a working link
-
-    for _ in range(max_attempts):
-        random_type = random.choice(types)
+    max_attempts = 3  # Number of attempts before Wikipedia fallback
+    
+    for attempt in range(max_attempts):
+        # Try Arena first
         try:
-            if random_type == 'arena':
-                a = Arena()
-                a.get_channel_contents()
-                link = a.get_item_url()
-                if not link.startswith('https'):
-                    print("No https, getting another link")
+            a = Arena()
+            a.get_channel_contents()
+            link = a.get_item_url()
+            if link and link.startswith('https'):
+                print(f"Arena link (attempt {attempt + 1}): {link}")
+                try:
+                    # Check if the link is accessible and can be embedded
+                    response = requests.head(link, allow_redirects=True, timeout=5)
+                    
+                    # Check for X-Frame-Options and Content-Security-Policy headers
+                    x_frame_options = response.headers.get('X-Frame-Options', '').upper()
+                    csp = response.headers.get('Content-Security-Policy', '')
+                    
+                    # Skip if site blocks framing
+                    if (x_frame_options in ['DENY', 'SAMEORIGIN'] or 
+                        'frame-ancestors' in csp or 
+                        'X-Frame-Options' in csp):
+                        print(f"Site blocks framing: {link}")
+                        continue
+                    
+                    if response.status_code == 200:
+                        # Try to actually connect to verify it works
+                        test_response = requests.get(link, timeout=5)
+                        if test_response.status_code == 200:
+                            # Additional check for common blocking phrases in content
+                            content = test_response.text.lower()
+                            blocking_phrases = [
+                                'blocked by chromium',
+                                'security error',
+                                'cannot be displayed in a frame',
+                                'x-frame-options',
+                                'refused to connect'
+                            ]
+                            if not any(phrase in content for phrase in blocking_phrases):
+                                return jsonify({"url": link, "can_embed": True})
+                            else:
+                                print(f"Content contains blocking phrases: {link}")
+                                continue
+                except (requests.exceptions.ConnectionError, 
+                       requests.exceptions.SSLError,
+                       requests.exceptions.TooManyRedirects, 
+                       requests.exceptions.RequestException,
+                       requests.exceptions.Timeout) as e:
+                    print(f"Connection error for Arena link: {str(e)}")
                     continue
-                print(f"Arena link: {link}")
-            elif random_type == 'wikipedia':
-                link = RandomWikipediaPage().get_url()
-            else:
-                link = Search().random()
-                if not link:
-                    print("No link found from marginalia, getting WIKI link")
-                    link = RandomWikipediaPage().get_url()
-                    # continue
-                if not link.startswith('https'):
-                    print("No https, getting another link")
-                    # print("No https, getting WIKI link")
-                    # link = RandomWikipediaPage().get_url()
-                    continue
-                print(f"Random link: {link}")
-
-            # Check if the link is accessible and can be embedded
-            response = requests.head(link, allow_redirects=True, timeout=5)
-            if response.headers.get('X-Frame-Options') in ['DENY', 'SAMEORIGIN']:
-                print("X-Frame-Options is set to DENY or SAMEORIGIN, getting another link")
-                continue
-            if response.status_code == 200:
-                return jsonify({"url": link, "can_embed": True})
-            else:
-                print(f"Link {link} is not accessible.")
-
         except Exception as e:
-            print(f"Error: {str(e)}")
+            print(f"Arena error (attempt {attempt + 1}): {str(e)}")
 
-    # If no working link is found after max_attempts, return a fallback URL
-    return jsonify({"url": RandomWikipediaPage().get_url(), "can_embed": True})
+        # Try Marginalia
+        try:
+            link = Search().random()
+            if link and link.startswith('https'):
+                print(f"Marginalia link (attempt {attempt + 1}): {link}")
+                try:
+                    # Check if the link is accessible and can be embedded
+                    response = requests.head(link, allow_redirects=True, timeout=5)
+                    
+                    # Check for X-Frame-Options and Content-Security-Policy headers
+                    x_frame_options = response.headers.get('X-Frame-Options', '').upper()
+                    csp = response.headers.get('Content-Security-Policy', '')
+                    
+                    # Skip if site blocks framing
+                    if (x_frame_options in ['DENY', 'SAMEORIGIN'] or 
+                        'frame-ancestors' in csp or 
+                        'X-Frame-Options' in csp):
+                        print(f"Site blocks framing: {link}")
+                        continue
+                    
+                    if response.status_code == 200:
+                        # Try to actually connect to verify it works
+                        test_response = requests.get(link, timeout=5)
+                        if test_response.status_code == 200:
+                            # Additional check for common blocking phrases in content
+                            content = test_response.text.lower()
+                            blocking_phrases = [
+                                'blocked by chromium',
+                                'security error',
+                                'cannot be displayed in a frame',
+                                'x-frame-options',
+                                'refused to connect'
+                            ]
+                            if not any(phrase in content for phrase in blocking_phrases):
+                                return jsonify({"url": link, "can_embed": True})
+                            else:
+                                print(f"Content contains blocking phrases: {link}")
+                                continue
+                except (requests.exceptions.ConnectionError,
+                       requests.exceptions.SSLError,
+                       requests.exceptions.TooManyRedirects,
+                       requests.exceptions.RequestException,
+                       requests.exceptions.Timeout) as e:
+                    print(f"Connection error for Marginalia link: {str(e)}")
+                    continue
+        except Exception as e:
+            print(f"Marginalia error (attempt {attempt + 1}): {str(e)}")
+        
+        print(f"Both sources failed on attempt {attempt + 1}, trying again...")
+
+    # Fall back to Wikipedia only after all attempts fail
+    print("All attempts failed, falling back to Wikipedia")
+    return jsonify({"url": "https://en.wikipedia.org/wiki/Special:Random", "can_embed": True})
 
 @app.route('/fetch-content', methods=['POST'])
 def fetch_content():
