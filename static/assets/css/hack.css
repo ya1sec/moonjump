@@ -283,3 +283,49 @@ body {
 .toolbar-button:hover::after {
   opacity: 1;
 }
+
+/* Update the Loading Animation styles */
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Update the loading button styles */
+#jump-button.loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px; /* Prevent button size from changing */
+}
+
+#jump-button.loading svg,
+#jump-button.loading > span:not(.loading-text) {
+  display: none;
+}
+
+#jump-button.loading .loading-spinner {
+  display: inline-block;
+}
+
+#jump-button .loading-spinner {
+  display: none;
+}
+
+/* Add loading text styles */
+.loading-text {
+  margin-left: 4px;
+  font-size: 13px;
+}
