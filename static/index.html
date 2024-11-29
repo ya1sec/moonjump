@@ -42,6 +42,11 @@
 </head>
 
 <body>
+  <!-- Add this div right after the <body> tag -->
+  <div class="loading-overlay">
+    <img src="https://melonking.net/universe/melozorbs/images/dolorg.gif" alt="Loading..." style="width: 50px;">
+  </div>
+
   <!-- Top Toolbar -->
   <div id="top-toolbar">
     <div class="relative flex items-center">
@@ -62,7 +67,7 @@
       <div class="glow"></div>
       <div class="orb"></div>
     </div>
-    <p>Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.</p>
+    <!-- <p>Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.</p> -->
   </div>
 
   <!-- Jump Result (Iframe) -->
@@ -139,11 +144,14 @@
 
       // Jump functionality
       jumpButton.addEventListener('click', function () {
-        // Add loading state
+        // Add loading state to button
         const originalContent = jumpButton.innerHTML;
         jumpButton.classList.add('loading');
         jumpButton.innerHTML = '<div class="loading-spinner"></div><span class="loading-text">Loading...</span>';
         jumpButton.disabled = true;
+
+        // Show loading overlay
+        document.querySelector('.loading-overlay').style.display = 'flex';
 
         fetch('/jump')
           .then(response => response.json())
@@ -155,6 +163,8 @@
 
                 // Add event listener to detect when iframe is loaded
                 jumpIframe.onload = function () {
+                  // Hide loading overlay
+                  document.querySelector('.loading-overlay').style.display = 'none';
                   // Restore button state
                   jumpButton.classList.remove('loading');
                   jumpButton.innerHTML = originalContent;
@@ -164,6 +174,7 @@
                 // Add timeout in case iframe fails to load
                 setTimeout(() => {
                   if (jumpButton.classList.contains('loading')) {
+                    document.querySelector('.loading-overlay').style.display = 'none';
                     jumpButton.classList.remove('loading');
                     jumpButton.innerHTML = originalContent;
                     jumpButton.disabled = false;
@@ -171,7 +182,8 @@
                 }, 10000); // 10 second timeout
               } else {
                 window.open(data.url, '_blank');
-                // Restore button state immediately for external links
+                // Hide loading overlay and restore button state immediately for external links
+                document.querySelector('.loading-overlay').style.display = 'none';
                 jumpButton.classList.remove('loading');
                 jumpButton.innerHTML = originalContent;
                 jumpButton.disabled = false;
@@ -180,7 +192,8 @@
           })
           .catch(error => {
             console.error('Error:', error);
-            // Restore button state on error
+            // Hide loading overlay and restore button state on error
+            document.querySelector('.loading-overlay').style.display = 'none';
             jumpButton.classList.remove('loading');
             jumpButton.innerHTML = originalContent;
             jumpButton.disabled = false;
