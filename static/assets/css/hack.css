@@ -88,6 +88,26 @@ body {
   opacity: 1;
 }
 
+#search-bar::-webkit-search-cancel-button {
+  display: none;
+}
+
+#search-bar::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+#search-bar::-moz-search-clear {
+  display: none;
+}
+
+#search-bar {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 #top-toolbar #info-button {
   height: 34px;
   padding: 0 15px;
