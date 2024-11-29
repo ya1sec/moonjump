@@ -236,16 +236,6 @@
         });
       });
 
-      // Info button functionality
-      infoButton.addEventListener('click', function () {
-        infoSection.style.display = 'block';
-      });
-
-      // Close info section
-      document.getElementById('close-info-button').addEventListener('click', function () {
-        infoSection.style.display = 'none';
-      });
-
       // Search functionality
       searchBar.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
@@ -253,24 +243,62 @@
           const query = searchBar.value.trim();
           if (!query) return;
 
+          // Show loading overlay
+          document.querySelector('.loading-overlay').style.display = 'flex';
+
+          // Disable the search bar to prevent multiple submissions
+          searchBar.disabled = true;
+
           fetch('/search?query=' + encodeURIComponent(query))
             .then(response => response.json())
             .then(data => {
+              // Re-enable the search bar
+              searchBar.disabled = false;
+
+              // Hide loading overlay
+              document.querySelector('.loading-overlay').style.display = 'none';
+
               if (data.error) {
                 console.error('Search error:', data.error);
+                alert('Error: ' + data.error);
                 return;
               }
               if (data.url) {
-                jumpIframe.src = data.url;
-                jumpResult.style.display = 'block';
+                // Check if the URL can be embedded
+                if (data.can_embed) {
+                  jumpIframe.src = data.url;
+                  jumpResult.style.display = 'block';
+
+                  // Add event listener to detect when iframe is loaded
+                  jumpIframe.onload = function () {
+                    // Hide loading overlay
+                    document.querySelector('.loading-overlay').style.display = 'none';
+                  };
+
+                  // Add timeout in case iframe fails to load
+                  setTimeout(() => {
+                    document.querySelector('.loading-overlay').style.display = 'none';
+                  }, 10000); // 10-second timeout
+                } else {
+                  // Open the URL in a new tab if it cannot be embedded
+                  window.open(data.url, '_blank');
+                }
+              } else {
+                alert('No results found.');
               }
             })
             .catch(error => {
+              // Re-enable the search bar
+              searchBar.disabled = false;
+
+              // Hide loading overlay
+              document.querySelector('.loading-overlay').style.display = 'none';
+
               console.error('Error:', error);
+              alert('An error occurred while searching.');
             });
         }
       });
-
       // Add pressed state handling for jump button
       jumpButton.addEventListener('mousedown', function () {
         this.classList.remove('hover:scale-105');
