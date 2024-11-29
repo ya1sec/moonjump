@@ -10,10 +10,19 @@ class Search:
 	
 	def process_query(self, query):
 		url = f'{self.base_url}/{query}'
-		response = requests.get(url)
-		if response.ok:
-			return response.json()
-		else:
+		headers = {
+			'User-Agent': 'Mozilla/5.0',
+			'Accept': 'application/json',
+		}
+		try:
+			response = requests.get(url, headers=headers, timeout=5)
+			if response.ok:
+				return response.json()
+			else:
+				print(f"API response not OK: {response.status_code}")
+				return None
+		except requests.RequestException as e:
+			print(f"Request exception: {str(e)}")
 			return None
 	
 	def get_link(self, query):
