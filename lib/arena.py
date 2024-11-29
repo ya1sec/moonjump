@@ -19,16 +19,17 @@ www-62v_kltr0d8
 
 # Channels dict with weights
 channels = {
-	f'internet-escape?page={random_page(11)}': 6,
-    f'dev-tools-y8yzn_83uci?page={random_page(17)}': 5,
-	f'bookmarks-1ntdk32bur0?page={random_page(6)}': 5,
-	f'we-should-talk-about-this-website?page={random_page(6)}': 4,
+	f'www-portfolios-and-studios?page={random_page(32)}': 8,
+	f'internet-escape?page={random_page(11)}': 7,
+	f'bookmarks-1ntdk32bur0?page={random_page(10)}': 6,
+    f'dev-tools-y8yzn_83uci?page={random_page(17)}': 3,
+	f'we-should-talk-about-this-website?page={random_page(7)}': 4,
 	f'www-62v_kltr0d8?page={random_page(6)}': 4,
 	f'site-cite-sight?page={random_page(3)}': 3,
     f'thirsty-for-knowledge?page={random_page(11)}': 3,
 	f'internet-surfing-clubs?page={random_page(2)}': 3,
-    f'django-7kobd_9biyi?page={random_page(5)}': 1,
-	f'links-to-the-cultural-revolution' : 1,
+    # f'django-7kobd_9biyi?page={random_page(5)}': 1,
+	# f'links-to-the-cultural-revolution' : 1,
 }
 
 
@@ -59,6 +60,8 @@ class Arena:
             self.channel = f'bookmarks-1ntdk32bur0?page={random_page(6)}'
         else:
             self.channel = weighted_random(channels)
+        
+        print(f"Selected channel: {self.channel}")
 
     
     def get_channel_contents(self):
