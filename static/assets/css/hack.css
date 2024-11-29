@@ -11,6 +11,9 @@ body {
     Bitstream Vera Sans Mono, Courier New, monospace, serif;
   background-color: #000000;
   font-size: 12px;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
 }
 
 /* Top Toolbar */
