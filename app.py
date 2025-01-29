@@ -5,6 +5,7 @@ import requests
 from lib.arena import Arena
 from lib.hn import Hack
 from lib.search import Search
+from lib.db import get_random_jumpable_site
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -63,6 +64,29 @@ def index():
 
 @app.route('/jump')
 def jump():
+    link = get_random_jumpable_site()
+    if link and link.startswith('https'):
+        # Optional: Do a quick HEAD check to confirm it still allows framing:
+        try:
+            response = requests.head(link, allow_redirects=True, timeout=5)
+            x_frame_options = response.headers.get('X-Frame-Options', '').upper()
+            csp = response.headers.get('Content-Security-Policy', '')
+            
+            if (x_frame_options not in ['DENY', 'SAMEORIGIN'] and
+                'frame-ancestors' not in csp and
+                'X-Frame-Options' not in csp and
+                response.ok):
+                # Good enough—send it to the client
+                return jsonify({"url": link, "can_embed": True})
+        except Exception as e:
+            print(f"Site {link} failed final check. {str(e)}")
+    
+    # If that fails or is None, fallback to Wikipedia:
+    print("Falling back to Wikipedia")
+    return jsonify({"url": "https://en.wikipedia.org/wiki/Special:Random", "can_embed": True})
+
+@app.route('/old_jump')
+def old_jump():
     max_attempts = 3  # Number of attempts before Wikipedia fallback
     
     for attempt in range(max_attempts):
