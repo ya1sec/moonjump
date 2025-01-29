@@ -2,3 +2,6 @@ __pycache__
 *.pyc
 svg.json
 notes.md
+.env
+/venv
+venv/*
