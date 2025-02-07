@@ -6,8 +6,18 @@ from lib.arena import Arena
 from lib.hn import Hack
 from lib.search import Search
 from lib.db import get_random_jumpable_site
+import os
+from dotenv import load_dotenv
+from supabase import create_client, Client
+
+load_dotenv()
 
 app = Flask(__name__, static_url_path='/static')
+
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
+
+supabase_client: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # class RandomWikipediaPage:
 #     def __init__(self):
@@ -64,7 +74,7 @@ def index():
 
 @app.route('/jump')
 def jump():
-    link = get_random_jumpable_site()
+    link = get_random_jumpable_site(supabase_client)
     if link and link.startswith('https'):
         # Optional: Do a quick HEAD check to confirm it still allows framing:
         try:

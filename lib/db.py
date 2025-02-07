@@ -3,32 +3,36 @@ import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
-# the env file is in the root directory
-load_dotenv(dotenv_path="../.env")
+def get_random_jumpable_site(supabase_client):
+    """Returns a random site from 'sites' where can_jump=True and source_url starts with 'https'."""
 
-# SUPABASE_URL: str = os.environ.get("SUPABASE_URL")
-# SUPABASE_KEY: str = os.environ.get("SUPABASE_KEY")
-SUPABASE_URL="https://milovxdtnbgxocmomoxs.supabase.co"
-SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pbG92eGR0bmJneG9jbW9tb3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzgxMjAyNzMsImV4cCI6MjA1MzY5NjI3M30.0RHwFUfdd2YNJRsitt8UAhtN-ExfLBXXzxO9LGaR944"
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+    # 1) Fetch the count of records where source_url starts with 'https'
+    count_response = (
+        supabase_client.table("sites")
+        .select("id")  # Selecting id to count records
+        .ilike("source_url", "https%")  # Filter for source_url starting with 'https'
+        .execute()
+    )
 
+    # TOTAL_RECORDS = len(count_response.data)  # Set total records based on count
+    # print(f"Total records with 'https': {TOTAL_RECORDS}")
 
-def get_random_jumpable_site():
-    """Returns a random site from 'sites' where can_jump=True."""
+    # # 2) Pick a random offset
+    # if TOTAL_RECORDS == 0:
+    #     print("No records found with 'https'.")
+    #     return None
 
-    # Known total records
-    TOTAL_RECORDS = 2331
+    TOTAL_RECORDS = 1000
 
-    # 1) Pick a random offset
     offset = random.randint(0, TOTAL_RECORDS - 1)
     print(f"Selected random offset: {offset}")
 
-    # 2) Fetch exactly one row at that offset
+    # 3) Fetch exactly one row at that offset
     try:
         row_response = (
-            supabase.table("sites")
-            .select("id, source_url, can_jump")  # Fetch important fields
-            .eq("can_jump", True)
+            supabase_client.table("sites")
+            .select("id, source_url")  # Fetch important fields
+            .ilike("source_url", "https%")  # Filter for source_url starting with 'https'
             .range(offset, offset)  # Fetch exactly one row
             .execute()
         )

@@ -16,15 +16,19 @@ def dump_arena_links_to_csv(csv_filename='arena_sites.csv'):
 
     # Channels and their maximum page counts (update as needed)
     channel_pages = {
-        'www-portfolios-and-studios': 32,
-        'internet-escape': 11,
-        'bookmarks-1ntdk32bur0': 10,
-        'dev-tools-y8yzn_83uci': 17,
-        'we-should-talk-about-this-website': 7,
-        'www-62v_kltr0d8': 6,
-        'site-cite-sight': 3,
-        'thirsty-for-knowledge': 11,
-        'internet-surfing-clubs': 2,
+        'sexy_web': None,
+        'web-1524558860': None,
+        'dotcom-bd4vxf9rydi': None,
+        'coolsites-biz': None,
+        'www-portfolios-and-studios': None,  # Set to None to fetch all pages
+        'internet-escape': None,
+        'bookmarks-1ntdk32bur0': None,
+        'dev-tools-y8yzn_83uci': None,
+        'we-should-talk-about-this-website': None,
+        'www-62v_kltr0d8': None,
+        'site-cite-sight': None,
+        'thirsty-for-knowledge': None,
+        'internet-surfing-clubs': None,
         # Add more channels here if desired
     }
 
@@ -112,26 +116,31 @@ def dump_arena_links_to_csv(csv_filename='arena_sites.csv'):
         writer.writeheader()
 
         # Loop through each channel and each page
-        for channel_slug, max_pages in channel_pages.items():
-            for page_num in range(1, max_pages + 1):
+        for channel_slug in channel_pages.keys():
+            page_num = 1  # Start from the first page
+            while True:  # Continue fetching until no more pages
                 print(f"Fetching {channel_slug} page {page_num}...")
                 arena_url = f'https://api.are.na/v2/channels/{channel_slug}?page={page_num}&per=1000'
                 try:
                     resp = requests.get(arena_url, timeout=10)
                     if not resp.ok:
                         print(f"Request failed for {arena_url} [{resp.status_code}]")
-                        continue
+                        break  # Exit the loop on failure
 
                     data = resp.json()
+
+                    # Check if there are contents to process
+                    contents = data.get('contents', [])
+                    if not contents:
+                        print(f"No more contents found for {channel_slug}.")
+                        break  # Exit the loop if no contents are returned
 
                     # channel info
                     channel_id = data.get('id')
                     channel_name = data.get('title')
 
-                    # The "contents" array holds the blocks for this page
-                    contents = data.get('contents', [])
                     for block in contents:
-                        # Skip blocks that don’t have a link
+                        # Skip blocks that don't have a link
                         source_dict = block.get('source') or {}
                         link_url = source_dict.get('url')
                         if not link_url:
@@ -235,13 +244,23 @@ def dump_arena_links_to_csv(csv_filename='arena_sites.csv'):
                         # Finally, write the row
                         writer.writerow(row)
 
+                    page_num += 1  # Move to the next page
+
                 except requests.exceptions.RequestException as e:
                     print(f"Error fetching {arena_url}: {e}")
+                    break  # Exit the loop on error
 
     print(f"\nDone! CSV saved to '{csv_filename}'.")
 
 #%%
 dump_arena_links_to_csv()	
+
+#%%
+# Remove any duplicate ids in the csv
+import pandas as pd
+df = pd.read_csv('arena_sites.csv')
+df = df.drop_duplicates(subset='id', keep='first')
+df.to_csv('arena_sites.csv', index=False)
 
 #%%
 def check_iframable(url, blocking_phrases=None, timeout=5):
