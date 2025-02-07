@@ -7,12 +7,12 @@ def get_random_jumpable_site(supabase_client):
     """Returns a random site from 'sites' where can_jump=True and source_url starts with 'https'."""
 
     # 1) Fetch the count of records where source_url starts with 'https'
-    count_response = (
-        supabase_client.table("sites")
-        .select("id")  # Selecting id to count records
-        .ilike("source_url", "https%")  # Filter for source_url starting with 'https'
-        .execute()
-    )
+    # count_response = (
+    #     supabase_client.table("sites")
+    #     .select("id")  # Selecting id to count records
+    #     .ilike("source_url", "https%")  # Filter for source_url starting with 'https'
+    #     .execute()
+    # )
 
     # TOTAL_RECORDS = len(count_response.data)  # Set total records based on count
     # print(f"Total records with 'https': {TOTAL_RECORDS}")
