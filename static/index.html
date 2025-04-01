@@ -47,15 +47,30 @@
 
   <!-- Top Toolbar -->
   <div id="top-toolbar">
-    <div class="relative flex items-center">
-      <input type="search" id="search-bar" placeholder="Search..." class="pe-10">
-      <span class="absolute inset-y-0 end-3 grid place-content-center">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="w-4 h-4 text-gray-500">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+    <div class="toolbar-top-container">
+      <div class="relative flex items-center">
+        <input type="search" id="search-bar" placeholder="Search..." class="pe-10">
+        <span class="absolute inset-y-0 end-3 grid place-content-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-4 h-4 text-gray-500">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+        </span>
+      </div>
+      <button id="info-button" class="toolbar-button info-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 15 15" fill="none">
+          <path
+            d="M7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1ZM7.5 2C10.5376 2 13 4.46243 13 7.5C13 10.5376 10.5376 13 7.5 13C4.46243 13 2 10.5376 2 7.5C2 4.46243 4.46243 2 7.5 2Z"
+            fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" />
+          <path
+            d="M7 4.5C7 4.22386 7.22386 4 7.5 4C7.77614 4 8 4.22386 8 4.5C8 4.77614 7.77614 5 7.5 5C7.22386 5 7 4.77614 7 4.5Z"
+            fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" />
+          <path d="M6.5 6H7.5V10H8.5V11H6.5V10H7.5V7H6.5V6Z" fill="currentColor" fill-rule="evenodd"
+            clip-rule="evenodd" />
         </svg>
-      </span>
+        <span>Info</span>
+      </button>
     </div>
   </div>
 
@@ -65,7 +80,8 @@
       <div class="glow"></div>
       <div class="orb"></div>
     </div>
-    <!-- <p>Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.</p> -->
+    <p class="app-description">Moonjump is a server that redirects you to a random page harvested from the arcane depths
+      of the web.</p>
   </div>
 
   <!-- Jump Result (Iframe) -->
@@ -79,10 +95,57 @@
   <!-- Info Section -->
   <div id="info-section" style="display: none;">
     <div id="info-content">
-      <h2>About Moonjump</h2>
-      <p>Moonjump is a server that redirects you to a random page harvested from the arcane depths of the web.</p>
-      <!-- Add more informational content as needed -->
-      <button id="close-info-button">Close</button>
+      <div class="info-header">
+        <h2>About Moonjump</h2>
+        <button id="close-info-button" aria-label="Close info">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12.8536 2.14645C13.0488 2.34171 13.0488 2.65829 12.8536 2.85355L2.85355 12.8536C2.65829 13.0488 2.34171 13.0488 2.14645 12.8536C1.95118 12.6583 1.95118 12.3417 2.14645 12.1464L12.1464 2.14645C12.3417 1.95118 12.6583 1.95118 12.8536 2.14645Z"
+              fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" />
+            <path
+              d="M2.14645 2.14645C2.34171 1.95118 2.65829 1.95118 2.85355 2.14645L12.8536 12.1464C13.0488 12.3417 13.0488 12.6583 12.8536 12.8536C12.6583 13.0488 12.3417 13.0488 12.1464 12.8536L2.14645 2.85355C1.95118 2.65829 1.95118 2.34171 2.14645 2.14645Z"
+              fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="info-content-body">
+        <div class="info-section">
+          <h3>What is Moonjump?</h3>
+          <p>Moonjump is an experimental web portal that redirects you to unexplored corners of the internet. Each
+            "jump" takes you to a random page harvested from the arcane depths of the web, creating a serendipitous
+            browsing experience.</p>
+        </div>
+
+        <div class="info-section">
+          <h3>How It Works</h3>
+          <p>When you click the "Jump" button, Moonjump selects a URL from its curated database of interesting, obscure,
+            and thought-provoking websites. Some sites will load directly in the embedded viewer, while others will open
+            in a new tab for security reasons.</p>
+        </div>
+
+        <div class="info-section">
+          <h3>Search Function</h3>
+          <p>If you're looking for something specific, use the search bar at the top. Moonjump will attempt to find a
+            relevant page from its collection that matches your query.</p>
+        </div>
+
+        <div class="info-section">
+          <h3>Tips</h3>
+          <ul class="info-list">
+            <li>Click <strong>Jump</strong> to discover random websites</li>
+            <li>Use <strong>Search</strong> to find specific content</li>
+            <li>Click <strong>Share</strong> to share interesting discoveries</li>
+            <li>Press <strong>Close</strong> to return to Moonjump</li>
+          </ul>
+        </div>
+
+        <div class="info-section">
+          <h3>About the Project</h3>
+          <p>Moonjump is inspired by the early web experiences of discovery and randomness, before algorithms determined
+            everything we see online. It aims to bring back the joy of stumbling upon unexpected content.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -149,6 +212,17 @@
       const infoButton = document.getElementById('info-button');
       const searchBar = document.getElementById('search-bar');
       const infoSection = document.getElementById('info-section');
+      const closeInfoButton = document.getElementById('close-info-button');
+
+      // Info button functionality
+      infoButton.addEventListener('click', function () {
+        infoSection.style.display = 'block';
+      });
+
+      // Close info button functionality
+      closeInfoButton.addEventListener('click', function () {
+        infoSection.style.display = 'none';
+      });
 
       // Jump functionality
       jumpButton.addEventListener('click', function () {
