@@ -143,15 +143,14 @@ body {
   max-width: 400px;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-  letter-spacing: 0.02em;
+  font-size: 10px;
+  /* letter-spacing: 0.02em; */
   text-align: center;
   background: rgba(0, 0, 0, 0.5);
   padding: 12px 20px;
   border-radius: 8px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   animation: fadeIn 1s ease-out;
 }
 
@@ -228,7 +227,7 @@ body {
   -webkit-backdrop-filter: blur(10px);
   z-index: 900;
   overflow: auto;
-  padding: 30px 20px;
+  padding: 80px 20px 30px 20px;
   animation: fadeIn 0.3s ease-out;
 }
 
