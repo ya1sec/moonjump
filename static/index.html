@@ -21,7 +21,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" media="screen" href="/static/assets/css/hack.css" />
-  <link rel="stylesheet" type="text/css" href="/static/assets/css/orb.css" />
+  <link rel="stylesheet" type="text/css" href="/static/assets/css/dots.css" />
   <link rel="icon" type="image/png"
     href="https://raw.githubusercontent.com/ya1sec/moonjump/main/static/assets/moonjump.png" />
   <!-- Add custom Tailwind config -->
@@ -36,7 +36,6 @@
       },
     }
   </script>
-  <script src="/static/assets/js/orb.js"></script>
 </head>
 
 <body>
@@ -76,11 +75,7 @@
 
   <!-- Main Content -->
   <div id="main-content">
-    <div class="orb-container">
-      <div class="glow"></div>
-      <div class="orb"></div>
-    </div>
-    <br>
+    <div class="dots-container"></div>
     <p class="app-description">A portal to the arcane depths of the web.</p>
   </div>
 
@@ -193,7 +188,6 @@
 
   <!-- JavaScript -->
   <script>
-
     function setVhUnit() {
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
