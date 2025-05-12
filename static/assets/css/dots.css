@@ -1,0 +1,163 @@
+:root {
+  --color1: transparent;
+  --color2: #FFF;
+  --duration: 4.4s;
+}
+
+@property --vh { syntax: '<length>'; initial-value: 100vh; inherits: false; }
+@property --vw { syntax: '<length>'; initial-value: 100vw; inherits: false; }
+
+@property --a { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@property --d { syntax: '<length>'; initial-value: 0px; inherits: false; }
+@property --e1 { syntax: '<number>'; initial-value: 0; inherits: false; }
+@property --e2 { syntax: '<number>'; initial-value: 0; inherits: false; }
+@property --e3 { syntax: '<number>'; initial-value: 0; inherits: false; }
+@property --e4 { syntax: '<number>'; initial-value: 0; inherits: false; }
+
+@keyframes a {
+  from { --a: 0deg; --d: 0px; --e1: 0; --e2: 0; }
+  4% { --a: 0deg; }
+  7% { --d: calc(var(--S) / 15); }
+  13% { --d: calc(var(--S) / 15); }
+  16% { --a: 90deg; }
+  21% { --a: 90deg; }
+  24% { --d: calc(var(--S) / 4); }
+  33% { --e1: 0; }
+  36% { --a: 225deg; --d: calc(var(--S) / 4); }
+  42% { --e2: 0; }
+  48% { --e3: 0; }
+  50% { --e1: 1; }
+  55% { --e4: 0; }
+  57% { --e2: 1; }
+  63% { --e3: 1; }
+  70% { --e4: 1; }
+  76% { --d: calc(var(--S) / 4); --e1: 1; --e2: 1; --e3: 1; --e4: 1; }
+  88% { --d: 0; --e1: .5; --e2: .5; --e3: 0; --e4: 0; }
+  to  { --a: 225deg; --d: 0; --e1: 0; --e2: 0; --e3: 0; --e4: 0; }
+}
+
+.dots-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dots-container::before {
+  content: '';
+  --w: 1280px; --h: 720px;
+  --scale: min(1, tan(atan2(.9 * var(--vh), var(--h))), tan(atan2(.9 * var(--vw), var(--w))));
+  --ws: round(down, var(--w) * var(--scale), 1px);
+  --hs: round(down, var(--h) * var(--scale), 1px);
+  width: var(--ws);
+  height: var(--hs);
+  
+  /* size of repeating pattern */
+  --S: calc(min(var(--hs), var(--ws)) / 6);
+  /* size of dot */
+  --s: calc(var(--S) / 80);
+  
+  background:
+    radial-gradient(circle at calc(50% + var(--d) * cos(var(--a) + 45deg)) calc(50% + var(--d) * sin(var(--a) + 45deg)), var(--color2) var(--s), transparent calc(var(--s) + 1px)),
+    radial-gradient(circle at calc(50% + var(--d) * cos(var(--a) + 135deg)) calc(50% + var(--d) * sin(var(--a) + 135deg)), var(--color2) var(--s), transparent calc(var(--s) + 1px)),
+    radial-gradient(circle at calc(50% + var(--d) * cos(var(--a) + 225deg)) calc(50% + var(--d) * sin(var(--a) + 225deg)), var(--color2) var(--s), transparent calc(var(--s) + 1px)),
+    radial-gradient(circle at calc(50% + var(--d) * cos(var(--a) + 315deg)) calc(50% + var(--d) * sin(var(--a) + 315deg)), var(--color2) var(--s), transparent calc(var(--s) + 1px)),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 315deg) + var(--e1) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 315deg) - var(--e1) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 315deg) + var(--e1) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 315deg) - var(--e1) * var(--S) / 2 + var(--S)),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 135deg) - var(--e1) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 135deg) + var(--e1) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 135deg) - var(--e1) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 135deg) + var(--e1) * var(--S) / 2 - var(--S)),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 45deg) - var(--e2) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 45deg) + var(--e2) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 45deg) - var(--e2) * var(--S) / 2 + var(--S))
+        calc(50% + var(--d) * sin(var(--a) + 45deg) + var(--e2) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 225deg) + var(--e2) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 225deg) - var(--e2) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 225deg) + var(--e2) * var(--S) / 2 - var(--S))
+        calc(50% + var(--d) * sin(var(--a) + 225deg) - var(--e2) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 315deg) + var(--e3) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 315deg) + var(--e3) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 225deg) - var(--e3) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 225deg) - var(--e3) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 45deg) + var(--e4) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 45deg) + var(--e4) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    ),
+    radial-gradient(
+      circle at
+        calc(50% + var(--d) * cos(var(--a) + 135deg) - var(--e4) * var(--S) / 2)
+        calc(50% + var(--d) * sin(var(--a) + 135deg) - var(--e4) * var(--S) / 2),
+      var(--color2) var(--s),
+      transparent calc(var(--s) + 1px)
+    );
+  background-position: center;
+  background-size: var(--S) var(--S);
+  background-color: var(--color1);
+  
+  /* hide background near the edges */
+  box-sizing: border-box;
+  border: solid var(--color1);
+  border-width:
+    calc((var(--hs) - var(--S) - round(down, var(--hs) - var(--S), 2 * var(--S))) / 2 - 4 * var(--s))
+    calc((var(--ws) - var(--S) - round(down, var(--ws) - var(--S), 2 * var(--S))) / 2 - 4 * var(--s));
+  
+  animation: a var(--duration) ease-in-out infinite both;
+} 
