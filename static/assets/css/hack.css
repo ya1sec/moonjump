@@ -556,7 +556,6 @@ body {
 
 .loading-overlay img {
   max-width: 200px;
-  filter: drop-shadow(0 0 10px rgba(0, 200, 255, 0.5));
   animation: float 2s ease-in-out infinite;
 }
 
