@@ -385,13 +385,6 @@
           if ('vibrate' in navigator) {
             navigator.vibrate(10); // Short vibration
           }
-
-          // Trigger haptic feedback on iOS
-          if ('ontouchstart' in document.documentElement) {
-            const event = new Event('touchstart');
-            event.force = 1;
-            button.dispatchEvent(event);
-          }
         }, { passive: true });
       });
 
@@ -399,13 +392,6 @@
       document.getElementById('jump-button').addEventListener('touchstart', () => {
         if ('vibrate' in navigator) {
           navigator.vibrate(15); // Slightly longer vibration for jump
-        }
-
-        // iOS haptic
-        if ('ontouchstart' in document.documentElement) {
-          const event = new Event('touchstart');
-          event.force = 1;
-          this.dispatchEvent(event);
         }
       }, { passive: true });
     });

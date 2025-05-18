@@ -16,14 +16,15 @@ def dump_arena_links_to_csv(csv_filename='arena_sites.csv'):
 
     # Channels and their maximum page counts (update as needed)
     channel_pages = {
+        'love-at-first-site': None,
+        'dev-tools-y8yzn_83uci': None,
+        'bookmarks-1ntdk32bur0': None,
         'sexy_web': None,
         'web-1524558860': None,
         'dotcom-bd4vxf9rydi': None,
         'coolsites-biz': None,
         'www-portfolios-and-studios': None,  # Set to None to fetch all pages
         'internet-escape': None,
-        'bookmarks-1ntdk32bur0': None,
-        'dev-tools-y8yzn_83uci': None,
         'we-should-talk-about-this-website': None,
         'www-62v_kltr0d8': None,
         'site-cite-sight': None,
@@ -122,9 +123,11 @@ def dump_arena_links_to_csv(csv_filename='arena_sites.csv'):
                 print(f"Fetching {channel_slug} page {page_num}...")
                 arena_url = f'https://api.are.na/v2/channels/{channel_slug}?page={page_num}&per=1000'
                 try:
-                    resp = requests.get(arena_url, timeout=10)
+                    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+                    resp = requests.get(arena_url, headers=headers, timeout=10)
                     if not resp.ok:
                         print(f"Request failed for {arena_url} [{resp.status_code}]")
+                        print(resp.text)
                         break  # Exit the loop on failure
 
                     data = resp.json()
@@ -255,93 +258,93 @@ def dump_arena_links_to_csv(csv_filename='arena_sites.csv'):
 #%%
 dump_arena_links_to_csv()	
 
-#%%
-# Remove any duplicate ids in the csv
-import pandas as pd
-df = pd.read_csv('arena_sites.csv')
-df = df.drop_duplicates(subset='id', keep='first')
-df.to_csv('arena_sites.csv', index=False)
+# #%%
+# # Remove any duplicate ids in the csv
+# import pandas as pd
+# df = pd.read_csv('arena_sites.csv')
+# df = df.drop_duplicates(subset='id', keep='first')
+# df.to_csv('arena_sites.csv', index=False)
 
-#%%
-def check_iframable(url, blocking_phrases=None, timeout=5):
-    """
-    Returns (can_jump, reason).
-    can_jump is True if the site is embeddable in an <iframe>,
-    False otherwise.
+# #%%
+# def check_iframable(url, blocking_phrases=None, timeout=5):
+#     """
+#     Returns (can_jump, reason).
+#     can_jump is True if the site is embeddable in an <iframe>,
+#     False otherwise.
 
-    reason is a short string explaining why it fails or "OK" if it is embeddable.
-    """
-    if blocking_phrases is None:
-        blocking_phrases = [
-            'blocked by chromium',
-            'security error',
-            'cannot be displayed in a frame',
-            'x-frame-options',
-            'refused to connect'
-        ]
+#     reason is a short string explaining why it fails or "OK" if it is embeddable.
+#     """
+#     if blocking_phrases is None:
+#         blocking_phrases = [
+#             'blocked by chromium',
+#             'security error',
+#             'cannot be displayed in a frame',
+#             'x-frame-options',
+#             'refused to connect'
+#         ]
 
-    try:
-        print(f"Checking {url}...")
-        # HEAD request first to check if the site is up and not blocking framing
-        head_resp = requests.head(url, allow_redirects=True, timeout=timeout)
+#     try:
+#         print(f"Checking {url}...")
+#         # HEAD request first to check if the site is up and not blocking framing
+#         head_resp = requests.head(url, allow_redirects=True, timeout=timeout)
 
-        if not head_resp.ok:
-            return False, f"HEAD status: {head_resp.status_code}"
+#         if not head_resp.ok:
+#             return False, f"HEAD status: {head_resp.status_code}"
 
-        # Check X-Frame-Options and Content-Security-Policy
-        xfo = head_resp.headers.get('X-Frame-Options', '').upper()
-        csp = head_resp.headers.get('Content-Security-Policy', '')
+#         # Check X-Frame-Options and Content-Security-Policy
+#         xfo = head_resp.headers.get('X-Frame-Options', '').upper()
+#         csp = head_resp.headers.get('Content-Security-Policy', '')
 
-        # Many sites block framing via 'DENY' or 'SAMEORIGIN' or 'frame-ancestors'
-        if xfo in ['DENY', 'SAMEORIGIN'] or 'frame-ancestors' in csp or 'X-Frame-Options' in csp:
-            return False, f"Blocked by X-Frame / CSP: xfo={xfo}, csp={csp}"
+#         # Many sites block framing via 'DENY' or 'SAMEORIGIN' or 'frame-ancestors'
+#         if xfo in ['DENY', 'SAMEORIGIN'] or 'frame-ancestors' in csp or 'X-Frame-Options' in csp:
+#             return False, f"Blocked by X-Frame / CSP: xfo={xfo}, csp={csp}"
 
-        # If HEAD looks good, do a GET to see if the content is actually loadable
-        get_resp = requests.get(url, timeout=timeout)
+#         # If HEAD looks good, do a GET to see if the content is actually loadable
+#         get_resp = requests.get(url, timeout=timeout)
 
-        if not get_resp.ok:
-            return False, f"GET status: {get_resp.status_code}"
+#         if not get_resp.ok:
+#             return False, f"GET status: {get_resp.status_code}"
 
-        # Look for any suspicious phrases in the HTML that often imply refusal
-        content_lower = get_resp.text.lower()
-        for phrase in blocking_phrases:
-            if phrase in content_lower:
-                return False, f"Blocking phrase '{phrase}' found in content"
+#         # Look for any suspicious phrases in the HTML that often imply refusal
+#         content_lower = get_resp.text.lower()
+#         for phrase in blocking_phrases:
+#             if phrase in content_lower:
+#                 return False, f"Blocking phrase '{phrase}' found in content"
 
-        # If we made it here, it should be embeddable
-        return True, "OK"
+#         # If we made it here, it should be embeddable
+#         return True, "OK"
 
-    except (requests.exceptions.ConnectionError,
-            requests.exceptions.SSLError,
-            requests.exceptions.TooManyRedirects,
-            requests.exceptions.RequestException,
-            requests.exceptions.Timeout) as e:
-        return False, f"Request error: {str(e)}"
+#     except (requests.exceptions.ConnectionError,
+#             requests.exceptions.SSLError,
+#             requests.exceptions.TooManyRedirects,
+#             requests.exceptions.RequestException,
+#             requests.exceptions.Timeout) as e:
+#         return False, f"Request error: {str(e)}"
 
 
-def add_iframable_info_to_csv(input_csv='arena_sites.csv', output_csv='arena_sites_checked.csv'):
-    with open(input_csv, 'r', newline='', encoding='utf-8') as infile, \
-         open(output_csv, 'w', newline='', encoding='utf-8') as outfile:
+# def add_iframable_info_to_csv(input_csv='arena_sites.csv', output_csv='arena_sites_checked.csv'):
+#     with open(input_csv, 'r', newline='', encoding='utf-8') as infile, \
+#          open(output_csv, 'w', newline='', encoding='utf-8') as outfile:
 
-        reader = csv.DictReader(infile)
-        fieldnames = reader.fieldnames + ['can_jump', 'jump_block_reason']
+#         reader = csv.DictReader(infile)
+#         fieldnames = reader.fieldnames + ['can_jump', 'jump_block_reason']
 
-        writer = csv.DictWriter(outfile, fieldnames=fieldnames)
-        writer.writeheader()
+#         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
+#         writer.writeheader()
 
-        for row in reader:
-            url = row.get('source_url')  # or whichever column holds the link
-            if not url:
-                row['can_jump'] = False
-                row['jump_block_reason'] = "No URL"
-            else:
-                can_jump, reason = check_iframable(url)
-                row['can_jump'] = can_jump
-                row['jump_block_reason'] = reason
+#         for row in reader:
+#             url = row.get('source_url')  # or whichever column holds the link
+#             if not url:
+#                 row['can_jump'] = False
+#                 row['jump_block_reason'] = "No URL"
+#             else:
+#                 can_jump, reason = check_iframable(url)
+#                 row['can_jump'] = can_jump
+#                 row['jump_block_reason'] = reason
 
-            writer.writerow(row)
+#             writer.writerow(row)
 
-    print(f"Done! Wrote updated rows to {output_csv}.")
+#     print(f"Done! Wrote updated rows to {output_csv}.")
 
-#%%
-add_iframable_info_to_csv()
+# #%%
+# add_iframable_info_to_csv()
