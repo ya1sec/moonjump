@@ -5,14 +5,19 @@ import requests
 from lib.arena import Arena
 from lib.hn import Hack
 from lib.search import Search
-from lib.db import get_random_jumpable_site
+from lib.db import get_random_jumpable_site, mark_site_as_not_jumpable, init_db
 import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
+from requests.exceptions import ConnectionError, Timeout, RequestException
 
 load_dotenv()
 
 app = Flask(__name__, static_url_path='/static')
+
+# Initialize the database
+DB_PATH = "lib/sites.db"
+init_db(DB_PATH)
 
 # SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
 # SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
@@ -74,23 +79,47 @@ def index():
 
 @app.route('/jump')
 def jump():
-    link = get_random_jumpable_site("lib/sites.db")
+    link = get_random_jumpable_site(DB_PATH)
     if link and link.startswith('https'):
-        # Optional: Do a quick HEAD check to confirm it still allows framing:
         try:
             response = requests.head(link, allow_redirects=True, timeout=5)
             x_frame_options = response.headers.get('X-Frame-Options', '').upper()
             csp = response.headers.get('Content-Security-Policy', '')
-            
-            if (x_frame_options not in ['DENY', 'SAMEORIGIN'] and
+
+            # Check if headers allow embedding
+            # The original check for 'X-Frame-Options' in csp string is kept, though it's unusual.
+            headers_allow_embedding = (
+                x_frame_options not in ['DENY', 'SAMEORIGIN'] and
                 'frame-ancestors' not in csp and
-                'X-Frame-Options' not in csp and
-                response.ok):
-                # Good enough—send it to the client
-                return jsonify({"url": link, "can_embed": True})
-        except Exception as e:
-            print(f"Site {link} failed final check. {str(e)}")
-    
+                'X-Frame-Options' not in csp 
+            )
+
+            if response.ok: # Status code 200-299
+                if headers_allow_embedding:
+                    # Site is OK and headers allow embedding
+                    return jsonify({"url": link, "can_embed": True})
+                else:
+                    # Site is OK, but headers (XFO/CSP) prevent embedding
+                    print(f"Site {link} cannot be embedded due to X-Frame-Options/CSP. XFO: '{x_frame_options}', CSP (first 100 chars): '{csp[:100]}'")
+                    mark_site_as_not_jumpable(link, DB_PATH)
+                    # Fall through to next fallback (HN)
+            else:
+                # Site responded, but not with 200 OK (e.g., 403, 404, 500)
+                print(f"Site {link} returned non-OK status: {response.status_code}")
+                mark_site_as_not_jumpable(link, DB_PATH)
+                # Fall through to next fallback (HN)
+
+        except ConnectionError as e:
+            print(f"Site {link} refused connection: {str(e)}")
+            mark_site_as_not_jumpable(link, DB_PATH)
+
+    # fall back to HN
+    try:
+        link = Hack().serve()
+        return jsonify({"url": link, "can_embed": True})
+    except Exception as e:
+        print(f"Hacker News fallback failed. {str(e)}")
+
     # If that fails or is None, fallback to Wikipedia:
     print("Falling back to Wikipedia")
     return jsonify({"url": "https://en.wikipedia.org/wiki/Special:Random", "can_embed": True})
