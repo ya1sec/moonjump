@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, request, current_app, jsonif
 from flask_talisman import Talisman
 import random
 import requests
-from lib.arena import Arena
+from lib.arena import Arena, ArenaError
 from lib.hn import Hack
 from lib.search import Search
 from lib.db import get_random_jumpable_site, mark_site_as_not_jumpable, init_db
@@ -72,6 +72,146 @@ class RandomWikipediaPage:
         # Fallback in case of an error or no pages
         return f'https://en.wikipedia.org/wiki/Category:{category}'
 
+
+def check_embeddable(link):
+    if not link or not link.startswith('https://'):
+        return False, "Only https URLs can be embedded"
+
+    try:
+        response = requests.head(link, allow_redirects=True, timeout=5)
+    except (ConnectionError, Timeout, RequestException) as e:
+        return False, str(e)
+
+    x_frame_options = response.headers.get('X-Frame-Options', '').upper()
+    csp = response.headers.get('Content-Security-Policy', '')
+    headers_allow_embedding = (
+        x_frame_options not in ['DENY', 'SAMEORIGIN'] and
+        'frame-ancestors' not in csp and
+        'X-Frame-Options' not in csp
+    )
+
+    if not response.ok:
+        return False, f"Status {response.status_code}"
+    if not headers_allow_embedding:
+        return False, "Blocked by X-Frame-Options or Content-Security-Policy"
+
+    return True, None
+
+
+def serialize_jump(candidate, source_kind=None, can_embed=True):
+    source = candidate.get('source') or {}
+    channel = candidate.get('channel') or {}
+    link = candidate.get('url') or source.get('url')
+
+    return {
+        "url": link,
+        "can_embed": can_embed,
+        "metadata": {
+            "source": source_kind or candidate.get('source_kind') or "local",
+            "title": candidate.get('title') or source.get('title'),
+            "block_id": candidate.get('id'),
+            "block_type": candidate.get('type'),
+            "channel_slug": channel.get('slug'),
+            "channel_title": channel.get('title'),
+            "curator": candidate.get('curator'),
+            "curator_slug": candidate.get('curator_slug'),
+            "connected_at": candidate.get('connected_at'),
+            "connection_count": candidate.get('connection_count'),
+        }
+    }
+
+
+def live_arena_jump_payload(mode="random", channel_slug=None, block_id=None, attempts=4):
+    last_error = None
+
+    for _ in range(attempts):
+        try:
+            candidate = Arena().get_jump(
+                mode=mode,
+                channel_slug=channel_slug,
+                block_id=block_id,
+            )
+            link = candidate.get('url') or (candidate.get('source') or {}).get('url')
+            can_embed, reason = check_embeddable(link)
+            if can_embed:
+                return serialize_jump(candidate, can_embed=True)
+            last_error = reason
+        except (ArenaError, RequestException, ValueError) as e:
+            last_error = str(e)
+
+    if last_error:
+        print(f"Live Are.na jump failed: {last_error}")
+    return None
+
+
+def local_db_jump_payload(attempts=3):
+    for _ in range(attempts):
+        link = get_random_jumpable_site(DB_PATH)
+        if not link:
+            return None
+
+        can_embed, reason = check_embeddable(link)
+        if can_embed:
+            return serialize_jump(
+                {
+                    "url": link,
+                    "title": link,
+                    "source_kind": "local:arena-cache",
+                },
+                can_embed=True,
+            )
+
+        print(f"Local site {link} is not jumpable: {reason}")
+        mark_site_as_not_jumpable(link, DB_PATH)
+
+    return None
+
+
+def build_jump_payload():
+    mode = request.args.get('mode', 'random')
+    channel_slug = request.args.get('channel') or request.args.get('channel_slug')
+    block_id = request.args.get('block_id')
+
+    try:
+        block_id = int(block_id) if block_id else None
+    except ValueError:
+        block_id = None
+
+    if mode not in {"random", "same_channel", "drift"}:
+        mode = "random"
+
+    # Normal jumps remain random; these modes only constrain the random pool.
+    payload = live_arena_jump_payload(
+        mode=mode,
+        channel_slug=channel_slug,
+        block_id=block_id,
+    )
+    if payload:
+        return payload
+
+    payload = local_db_jump_payload()
+    if payload:
+        return payload
+
+    try:
+        link = Hack().serve()
+        return serialize_jump(
+            {"url": link, "title": link, "source_kind": "hacker-news"},
+            can_embed=True,
+        )
+    except Exception as e:
+        print(f"Hacker News fallback failed. {str(e)}")
+
+    print("Falling back to Wikipedia")
+    return serialize_jump(
+        {
+            "url": "https://en.wikipedia.org/wiki/Special:Random",
+            "title": "Wikipedia Random",
+            "source_kind": "wikipedia",
+        },
+        can_embed=True,
+    )
+
 # Serve index.html
 @app.route('/')
 def index():
@@ -79,50 +219,12 @@ def index():
 
 @app.route('/jump')
 def jump():
-    link = get_random_jumpable_site(DB_PATH)
-    if link and link.startswith('https'):
-        try:
-            response = requests.head(link, allow_redirects=True, timeout=5)
-            x_frame_options = response.headers.get('X-Frame-Options', '').upper()
-            csp = response.headers.get('Content-Security-Policy', '')
+    return jsonify(build_jump_payload())
 
-            # Check if headers allow embedding
-            # The original check for 'X-Frame-Options' in csp string is kept, though it's unusual.
-            headers_allow_embedding = (
-                x_frame_options not in ['DENY', 'SAMEORIGIN'] and
-                'frame-ancestors' not in csp and
-                'X-Frame-Options' not in csp 
-            )
 
-            if response.ok: # Status code 200-299
-                if headers_allow_embedding:
-                    # Site is OK and headers allow embedding
-                    return jsonify({"url": link, "can_embed": True})
-                else:
-                    # Site is OK, but headers (XFO/CSP) prevent embedding
-                    print(f"Site {link} cannot be embedded due to X-Frame-Options/CSP. XFO: '{x_frame_options}', CSP (first 100 chars): '{csp[:100]}'")
-                    mark_site_as_not_jumpable(link, DB_PATH)
-                    # Fall through to next fallback (HN)
-            else:
-                # Site responded, but not with 200 OK (e.g., 403, 404, 500)
-                print(f"Site {link} returned non-OK status: {response.status_code}")
-                mark_site_as_not_jumpable(link, DB_PATH)
-                # Fall through to next fallback (HN)
-
-        except ConnectionError as e:
-            print(f"Site {link} refused connection: {str(e)}")
-            mark_site_as_not_jumpable(link, DB_PATH)
-
-    # fall back to HN
-    try:
-        link = Hack().serve()
-        return jsonify({"url": link, "can_embed": True})
-    except Exception as e:
-        print(f"Hacker News fallback failed. {str(e)}")
-
-    # If that fails or is None, fallback to Wikipedia:
-    print("Falling back to Wikipedia")
-    return jsonify({"url": "https://en.wikipedia.org/wiki/Special:Random", "can_embed": True})
+@app.route('/api/jump/next')
+def api_jump_next():
+    return jsonify(build_jump_payload())
 
 @app.route('/old_jump')
 def old_jump():

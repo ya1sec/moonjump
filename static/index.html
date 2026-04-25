@@ -82,6 +82,12 @@
   <!-- Jump Result (Iframe) -->
   <div id="jump-result" style="display: none;">
     <button class="close-button">&times;</button>
+    <div id="jump-meta" class="jump-meta" aria-live="polite">
+      <span id="jump-source-label">Ready</span>
+      <span id="jump-channel-label"></span>
+    </div>
+    <div class="jump-swipe-zone jump-swipe-zone-left" aria-hidden="true"></div>
+    <div class="jump-swipe-zone jump-swipe-zone-right" aria-hidden="true"></div>
     <div class="iframe-container">
       <iframe id="jump-iframe" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
     </div>
@@ -147,6 +153,15 @@
   <!-- Bottom Toolbar -->
   <div id="bottom-toolbar">
     <div class="toolbar-buttons">
+      <button id="history-button" class="toolbar-button" aria-label="Previous jump" title="Previous jump">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M6.85355 3.14645C7.04882 3.34171 7.04882 3.65829 6.85355 3.85355L3.70711 7H12.5C12.7761 7 13 7.22386 13 7.5C13 7.77614 12.7761 8 12.5 8H3.70711L6.85355 11.1464C7.04882 11.3417 7.04882 11.6583 6.85355 11.8536C6.65829 12.0488 6.34171 12.0488 6.14645 11.8536L2.14645 7.85355C1.95118 7.65829 1.95118 7.34171 2.14645 7.14645L6.14645 3.14645C6.34171 2.95118 6.65829 2.95118 6.85355 3.14645Z"
+            fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" />
+        </svg>
+        <span>Back</span>
+      </button>
+
       <button id="share-button" class="toolbar-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
           <path
@@ -170,6 +185,24 @@
             fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" />
         </svg>
         <span>Jump</span>
+      </button>
+
+      <button id="same-channel-button" class="toolbar-button" aria-label="Random jump from the same channel" title="Same channel">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M2.5 3C2.22386 3 2 3.22386 2 3.5V6.5C2 6.77614 2.22386 7 2.5 7H5.5C5.77614 7 6 6.77614 6 6.5V3.5C6 3.22386 5.77614 3 5.5 3H2.5ZM3 4H5V6H3V4ZM9.5 3C9.22386 3 9 3.22386 9 3.5V6.5C9 6.77614 9.22386 7 9.5 7H12.5C12.7761 7 13 6.77614 13 6.5V3.5C13 3.22386 12.7761 3 12.5 3H9.5ZM10 4H12V6H10V4ZM2.5 9C2.22386 9 2 9.22386 2 9.5V12.5C2 12.7761 2.22386 13 2.5 13H5.5C5.77614 13 6 12.7761 6 12.5V9.5C6 9.22386 5.77614 9 5.5 9H2.5ZM3 10H5V12H3V10ZM9.5 9C9.22386 9 9 9.22386 9 9.5V12.5C9 12.7761 9.22386 13 9.5 13H12.5C12.7761 13 13 12.7761 13 12.5V9.5C13 9.22386 12.7761 9 12.5 9H9.5ZM10 10H12V12H10V10Z"
+            fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" />
+        </svg>
+        <span>Same</span>
+      </button>
+
+      <button id="drift-button" class="toolbar-button" aria-label="Random drift through Are.na connections" title="Drift">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M3 3.5C3 2.67157 3.67157 2 4.5 2C5.32843 2 6 2.67157 6 3.5C6 4.32843 5.32843 5 4.5 5C3.67157 5 3 4.32843 3 3.5ZM9 11.5C9 10.6716 9.67157 10 10.5 10C11.3284 10 12 10.6716 12 11.5C12 12.3284 11.3284 13 10.5 13C9.67157 13 9 12.3284 9 11.5ZM10.5 2C9.67157 2 9 2.67157 9 3.5C9 4.32843 9.67157 5 10.5 5C11.3284 5 12 4.32843 12 3.5C12 2.67157 11.3284 2 10.5 2ZM5.54873 4.56961L9.45127 10.4304L8.61868 10.9844L4.71614 5.12363L5.54873 4.56961ZM9.125 3.5C9.125 3.77614 8.90114 4 8.625 4H6.375C6.09886 4 5.875 3.77614 5.875 3.5C5.875 3.22386 6.09886 3 6.375 3H8.625C8.90114 3 9.125 3.22386 9.125 3.5Z"
+            fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" />
+        </svg>
+        <span>Drift</span>
       </button>
 
       <button id="close-button" class="toolbar-button close-button">
@@ -200,200 +233,275 @@
     document.addEventListener('DOMContentLoaded', function () {
       const jumpButton = document.getElementById('jump-button');
       const shareButton = document.getElementById('share-button');
+      const historyButton = document.getElementById('history-button');
+      const sameChannelButton = document.getElementById('same-channel-button');
+      const driftButton = document.getElementById('drift-button');
       const closeButtons = document.querySelectorAll('.close-button');
       const jumpResult = document.getElementById('jump-result');
       const jumpIframe = document.getElementById('jump-iframe');
+      const jumpSourceLabel = document.getElementById('jump-source-label');
+      const jumpChannelLabel = document.getElementById('jump-channel-label');
       const infoButton = document.getElementById('info-button');
       const searchBar = document.getElementById('search-bar');
       const infoSection = document.getElementById('info-section');
       const closeInfoButton = document.getElementById('close-info-button');
+      const loadingOverlay = document.querySelector('.loading-overlay');
+      const jumpButtonContent = jumpButton.innerHTML;
 
-      // Info button functionality
+      let currentJump = null;
+      let jumpHistory = [];
+      let historyIndex = -1;
+      let loadToken = 0;
+      let touchStart = null;
+      let loadingState = false;
+
+      function setLoading(isLoading) {
+        loadingState = isLoading;
+        loadingOverlay.style.display = isLoading ? 'flex' : 'none';
+        jumpButton.classList.toggle('loading', isLoading);
+        jumpButton.disabled = isLoading;
+        jumpButton.innerHTML = isLoading
+          ? '<div class="loading-spinner"></div><span class="loading-text">Loading...</span>'
+          : jumpButtonContent;
+        updateActionState();
+      }
+
+      function compactLabel(value, fallback) {
+        if (!value) return fallback;
+        return value.length > 42 ? value.slice(0, 39) + '...' : value;
+      }
+
+      function updateMeta(metadata) {
+        const source = metadata?.source || 'moonjump';
+        const channel = metadata?.channel_title || metadata?.channel_slug || '';
+        jumpSourceLabel.textContent = source.replace(':', ' / ');
+        jumpChannelLabel.textContent = compactLabel(channel, '');
+      }
+
+      function updateActionState() {
+        const metadata = currentJump?.metadata || {};
+        historyButton.disabled = loadingState || historyIndex <= 0;
+        sameChannelButton.disabled = loadingState || !metadata.channel_slug;
+        driftButton.disabled = loadingState || !metadata.block_id;
+      }
+
+      function rememberJump(data) {
+        jumpHistory = jumpHistory.slice(0, historyIndex + 1);
+        jumpHistory.push(data);
+        historyIndex = jumpHistory.length - 1;
+      }
+
+      function showJump(data, options = {}) {
+        if (!data?.url) return;
+
+        currentJump = data;
+        updateMeta(data.metadata || {});
+
+        if (options.remember !== false) {
+          rememberJump(data);
+        }
+        updateActionState();
+
+        if (!data.can_embed) {
+          window.open(data.url, '_blank');
+          setLoading(false);
+          return;
+        }
+
+        const token = ++loadToken;
+        setLoading(true);
+        jumpIframe.onload = function () {
+          if (token === loadToken) {
+            setLoading(false);
+          }
+        };
+        jumpIframe.src = data.url;
+        jumpResult.style.display = 'block';
+
+        setTimeout(() => {
+          if (token === loadToken) {
+            setLoading(false);
+          }
+        }, 10000);
+      }
+
+      function jumpUrl(options = {}) {
+        const params = new URLSearchParams();
+        params.set('mode', options.mode || 'random');
+
+        if (options.channel) {
+          params.set('channel', options.channel);
+        }
+        if (options.blockId) {
+          params.set('block_id', String(options.blockId));
+        }
+
+        return '/api/jump/next?' + params.toString();
+      }
+
+      function loadJump(options = {}) {
+        setLoading(true);
+        fetch(jumpUrl(options))
+          .then(response => response.json())
+          .then(data => showJump(data))
+          .catch(error => {
+            console.error('Jump error:', error);
+            setLoading(false);
+          });
+      }
+
+      function showPreviousJump() {
+        if (historyIndex <= 0) return;
+        historyIndex -= 1;
+        showJump(jumpHistory[historyIndex], { remember: false });
+      }
+
       infoButton.addEventListener('click', function () {
         infoSection.style.display = 'block';
       });
 
-      // Close info button functionality
       closeInfoButton.addEventListener('click', function () {
         infoSection.style.display = 'none';
       });
 
-      // Jump functionality
       jumpButton.addEventListener('click', function () {
-        // Add loading state to button
-        const originalContent = jumpButton.innerHTML;
-        jumpButton.classList.add('loading');
-        jumpButton.innerHTML = '<div class="loading-spinner"></div><span class="loading-text">Loading...</span>';
-        jumpButton.disabled = true;
-
-        // Show loading overlay
-        document.querySelector('.loading-overlay').style.display = 'flex';
-
-        fetch('/jump')
-          .then(response => response.json())
-          .then(data => {
-            if (data.url) {
-              if (data.can_embed) {
-                jumpIframe.src = data.url;
-                jumpResult.style.display = 'block';
-
-                // Add event listener to detect when iframe is loaded
-                jumpIframe.onload = function () {
-                  // Hide loading overlay
-                  document.querySelector('.loading-overlay').style.display = 'none';
-                  // Restore button state
-                  jumpButton.classList.remove('loading');
-                  jumpButton.innerHTML = originalContent;
-                  jumpButton.disabled = false;
-                };
-
-                // Add timeout in case iframe fails to load
-                setTimeout(() => {
-                  if (jumpButton.classList.contains('loading')) {
-                    document.querySelector('.loading-overlay').style.display = 'none';
-                    jumpButton.classList.remove('loading');
-                    jumpButton.innerHTML = originalContent;
-                    jumpButton.disabled = false;
-                  }
-                }, 10000); // 10 second timeout
-              } else {
-                window.open(data.url, '_blank');
-                // Hide loading overlay and restore button state immediately for external links
-                document.querySelector('.loading-overlay').style.display = 'none';
-                jumpButton.classList.remove('loading');
-                jumpButton.innerHTML = originalContent;
-                jumpButton.disabled = false;
-              }
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            // Hide loading overlay and restore button state on error
-            document.querySelector('.loading-overlay').style.display = 'none';
-            jumpButton.classList.remove('loading');
-            jumpButton.innerHTML = originalContent;
-            jumpButton.disabled = false;
-          });
+        loadJump({ mode: 'random' });
       });
 
-      // Share functionality
+      historyButton.addEventListener('click', showPreviousJump);
+
+      sameChannelButton.addEventListener('click', function () {
+        const channel = currentJump?.metadata?.channel_slug;
+        if (!channel) return;
+        loadJump({ mode: 'same_channel', channel });
+      });
+
+      driftButton.addEventListener('click', function () {
+        const blockId = currentJump?.metadata?.block_id;
+        if (!blockId) return;
+        loadJump({ mode: 'drift', blockId });
+      });
+
       shareButton.addEventListener('click', function () {
-        const url = jumpIframe.src;
+        const url = currentJump?.url || jumpIframe.src;
         if (!url || url === 'about:blank') {
           alert('No content to share.');
           return;
         }
         if (navigator.share) {
           navigator.share({
-            title: 'Check this out!',
+            title: currentJump?.metadata?.title || 'Moonjump',
             url: url
-          }).then(() => {
-            console.log('Thanks for sharing!');
           }).catch(console.error);
         } else {
-          // Fallback for browsers that do not support the Web Share API
           alert('Your browser does not support the Web Share API');
         }
       });
 
-      // Close functionality for both close buttons
       closeButtons.forEach(function (button) {
         button.addEventListener('click', function () {
           jumpResult.style.display = 'none';
           jumpIframe.src = 'about:blank';
+          setLoading(false);
         });
       });
 
-      // Search functionality
       searchBar.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-          event.preventDefault();
-          const query = searchBar.value.trim();
-          if (!query) return;
+        if (event.key !== 'Enter') return;
 
-          // Show loading overlay
-          document.querySelector('.loading-overlay').style.display = 'flex';
+        event.preventDefault();
+        const query = searchBar.value.trim();
+        if (!query) return;
 
-          // Disable the search bar to prevent multiple submissions
-          searchBar.disabled = true;
+        setLoading(true);
+        searchBar.disabled = true;
 
-          fetch('/search?query=' + encodeURIComponent(query))
-            .then(response => response.json())
-            .then(data => {
-              // Re-enable the search bar
-              searchBar.disabled = false;
-
-              // Hide loading overlay
-              document.querySelector('.loading-overlay').style.display = 'none';
-
-              if (data.error) {
-                console.error('Search error:', data.error);
-                alert('Error: ' + data.error);
-                return;
-              }
-              if (data.url) {
-                // Check if the URL can be embedded
-                if (data.can_embed) {
-                  jumpIframe.src = data.url;
-                  jumpResult.style.display = 'block';
-
-                  // Add event listener to detect when iframe is loaded
-                  jumpIframe.onload = function () {
-                    // Hide loading overlay
-                    document.querySelector('.loading-overlay').style.display = 'none';
-                  };
-
-                  // Add timeout in case iframe fails to load
-                  setTimeout(() => {
-                    document.querySelector('.loading-overlay').style.display = 'none';
-                  }, 10000); // 10-second timeout
-                } else {
-                  // Open the URL in a new tab if it cannot be embedded
-                  window.open(data.url, '_blank');
-                }
-              } else {
-                alert('No results found.');
-              }
-            })
-            .catch(error => {
-              // Re-enable the search bar
-              searchBar.disabled = false;
-
-              // Hide loading overlay
-              document.querySelector('.loading-overlay').style.display = 'none';
-
-              console.error('Error:', error);
-              alert('An error occurred while searching.');
-            });
-        }
+        fetch('/search?query=' + encodeURIComponent(query))
+          .then(response => response.json())
+          .then(data => {
+            searchBar.disabled = false;
+            if (data.error) {
+              console.error('Search error:', data.error);
+              alert('Error: ' + data.error);
+              setLoading(false);
+              return;
+            }
+            if (data.url) {
+              showJump({
+                ...data,
+                metadata: {
+                  source: 'marginalia',
+                  title: query,
+                },
+              });
+            } else {
+              alert('No results found.');
+              setLoading(false);
+            }
+          })
+          .catch(error => {
+            searchBar.disabled = false;
+            console.error('Search error:', error);
+            alert('An error occurred while searching.');
+            setLoading(false);
+          });
       });
-      // Add pressed state handling for jump button
+
+      jumpResult.addEventListener('touchstart', function (event) {
+        if (event.touches.length !== 1) return;
+        const touch = event.touches[0];
+        touchStart = {
+          x: touch.clientX,
+          y: touch.clientY,
+          time: Date.now(),
+        };
+      }, { passive: true });
+
+      jumpResult.addEventListener('touchend', function (event) {
+        if (!touchStart || event.changedTouches.length !== 1) return;
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - touchStart.x;
+        const dy = touch.clientY - touchStart.y;
+        const elapsed = Math.max(Date.now() - touchStart.time, 1);
+        const velocity = Math.abs(dx) / elapsed;
+        const isHorizontal = Math.abs(dx) > 64 && Math.abs(dx) > Math.abs(dy) * 1.35;
+        const isFastHorizontal = Math.abs(dx) > 42 && velocity > 0.65 && Math.abs(dx) > Math.abs(dy);
+
+        touchStart = null;
+        if (!isHorizontal && !isFastHorizontal) return;
+
+        if (dx < 0) {
+          loadJump({ mode: 'random' });
+        } else {
+          showPreviousJump();
+        }
+      }, { passive: true });
+
       jumpButton.addEventListener('mousedown', function () {
-        this.classList.remove('hover:scale-105');
         this.classList.add('scale-95');
         this.style.boxShadow = 'inset 0 0 20px rgba(255, 255, 255, 0.5)';
       });
 
       jumpButton.addEventListener('mouseup', function () {
         this.classList.remove('scale-95');
-        this.classList.add('hover:scale-105');
+        this.style.boxShadow = '';
       });
 
-      // Add this to your existing DOMContentLoaded event handler
       document.querySelectorAll('.toolbar-button').forEach(button => {
         button.addEventListener('touchstart', () => {
           if ('vibrate' in navigator) {
-            navigator.vibrate(10); // Short vibration
+            navigator.vibrate(10);
           }
         }, { passive: true });
       });
 
-      // Add specific haptic for jump button
-      document.getElementById('jump-button').addEventListener('touchstart', () => {
+      jumpButton.addEventListener('touchstart', () => {
         if ('vibrate' in navigator) {
-          navigator.vibrate(15); // Slightly longer vibration for jump
+          navigator.vibrate(15);
         }
       }, { passive: true });
+
+      updateActionState();
     });
   </script>
 </body>
