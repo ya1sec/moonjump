@@ -133,9 +133,7 @@ def mark_site_as_not_jumpable(site_url: str, db_path: str = "sites.db") -> None:
                 logging.info(f"Site {site_url} marked non-jumpable. Invalidating jumpable sites count cache.")
                 _cached_jumpable_sites_count = -1
                 
-    except sqlite3.Error:
+    except sqlite3.Error as e:
         # Context manager already logged the error.
-        # Consider invalidating cache here too, though subsequent get calls will likely catch inconsistencies.
-        # For now, rely on get_random_jumpable_site's invalidation logic.
-        print(f"Error marking site as not jumpable (specific): {e}") # This 'e' is not defined, remove or fix. Will remove.
+        print(f"Error marking site as not jumpable: {e}")
         pass

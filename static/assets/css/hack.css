@@ -5,6 +5,17 @@
   padding: 0;
 }
 
+:root {
+  --mj-surface: rgba(23, 23, 23, 0.68);
+  --mj-surface-strong: rgba(18, 18, 18, 0.88);
+  --mj-border: rgba(255, 255, 255, 0.14);
+  --mj-border-soft: rgba(255, 255, 255, 0.08);
+  --mj-text: rgba(255, 255, 255, 0.9);
+  --mj-text-muted: rgba(255, 255, 255, 0.58);
+  --mj-radius: 8px;
+  --mj-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Body Styles */
 body {
   font-family: Hack, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
@@ -215,6 +226,57 @@ body {
   border: none;
 }
 
+.jump-meta {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 901;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: min(560px, calc(100vw - 86px));
+  pointer-events: none;
+}
+
+.jump-meta span {
+  min-width: 0;
+  max-width: 260px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: var(--mj-surface);
+  border: 1px solid var(--mj-border);
+  border-radius: var(--mj-radius);
+  color: var(--mj-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  padding: 8px 10px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.jump-meta span:empty {
+  display: none;
+}
+
+.jump-swipe-zone {
+  position: absolute;
+  top: 72px;
+  bottom: 86px;
+  z-index: 902;
+  width: 34px;
+  touch-action: pan-y;
+}
+
+.jump-swipe-zone-left {
+  left: 0;
+}
+
+.jump-swipe-zone-right {
+  right: 0;
+}
+
 /* Info Section */
 #info-section {
   position: fixed;
@@ -354,7 +416,7 @@ body {
 /* Bottom Toolbar */
 #bottom-toolbar {
   position: fixed;
-  bottom: 20px;
+  bottom: max(20px, env(safe-area-inset-bottom));
   left: 0;
   right: 0;
   z-index: 1000;
@@ -371,15 +433,16 @@ body {
 .toolbar-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  background-color: rgba(23, 23, 23, 0.6);
+  background-color: var(--mj-surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border: 1px solid var(--mj-border-soft);
+  border-radius: var(--mj-radius);
   color: #fff;
   cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.15s var(--mj-ease);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13px;
   padding: 8px 16px;
@@ -390,6 +453,16 @@ body {
   position: relative;
   transform: translateY(0);
   will-change: transform;
+}
+
+.toolbar-button:disabled {
+  cursor: default;
+  opacity: 0.38;
+  transform: none;
+}
+
+.toolbar-button:disabled::after {
+  opacity: 0;
 }
 
 /* Active/Pressed state - updated for better iOS support */
@@ -404,8 +477,8 @@ body {
 /* Jump button specific styles */
 #jump-button {
   padding: 10px 20px;
-  background-color: rgba(23, 23, 23, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(30, 30, 30, 0.78);
+  border: 1px solid var(--mj-border);
 }
 
 #jump-button svg {
@@ -473,19 +546,19 @@ body {
   transition: opacity 0.2s ease;
 }
 
-.toolbar-button:hover::after {
+.toolbar-button:not(:disabled):hover::after {
   opacity: 1;
 }
 
 /* Hover effect for buttons */
 @media (hover: hover) {
-  .toolbar-button:hover {
+  .toolbar-button:not(:disabled):hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     background-color: rgba(30, 30, 30, 0.7);
   }
   
-  #jump-button:hover {
+  #jump-button:not(:disabled):hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     background-color: rgba(35, 35, 35, 0.8);
@@ -604,12 +677,44 @@ body {
   }
   
   .toolbar-button {
-    padding: 8px 12px;
+    width: 42px;
+    height: 40px;
+    flex: 0 0 42px;
+    padding: 0;
     font-size: 12px;
+  }
+
+  .toolbar-button span {
+    display: none;
   }
   
   #jump-button {
-    padding: 8px 16px;
+    width: auto;
+    min-width: 72px;
+    flex: 0 0 auto;
+    padding: 0 14px;
+  }
+
+  #jump-button span {
+    display: inline;
+  }
+
+  .jump-meta {
+    top: 12px;
+    left: 12px;
+    max-width: calc(100vw - 68px);
+  }
+
+  .jump-meta span {
+    max-width: 42vw;
+    font-size: 11px;
+    padding: 7px 8px;
+  }
+
+  .jump-swipe-zone {
+    top: 64px;
+    bottom: 74px;
+    width: 28px;
   }
 }
 
